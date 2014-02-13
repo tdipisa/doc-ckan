@@ -1,7 +1,7 @@
 .. _mainindex.rst:
 
-DRDSI CKAN Project documentation v\ |release|
-=============================================
+DRDSI CKAN Project
+==================
 
 Welcome to the DRDSI CKAN Project documentation v\ |release|.  
 
@@ -28,10 +28,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`search`
 
-External documentation
-======================
-
-You can find the original GeoNetwork 2.10.x documentation at the following links:
-
-- `User manual <../../gn_doc/users/index.html>`_
-- `Dev manual <../../gn_doc/developer/index.html>`_

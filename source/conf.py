@@ -46,7 +46,7 @@ copyright = u'2014 GeoSolutions'
 # The short X.Y version.
 version = '1.0'
 # The full version, including alpha/beta/rc tags.
-release = '20140206-draft'
+release = '20140213'
 
 language = 'en'
 
@@ -97,10 +97,11 @@ if os.environ.get('HTML_THEME_PATH'):
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 #html_title = project + " v" + release + " " + manual
-html_title = project + " " + manual + " " + release 
+html_title = project + " doc"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = manual + " v" + release
+# html_short_title = manual + " v" + release
+html_short_title = manual
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -152,7 +153,7 @@ html_use_index = True
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GeoNetworkUserManual'
+htmlhelp_basename = 'drdsidoc'
 
 
 # Options for LaTeX output
@@ -164,12 +165,11 @@ latex_paper_size = 'a4'
 # The font size ('10pt', '11pt' or '12pt').
 latex_font_size = '11pt'
 
+
 # Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title, author, document class [howto/manual]).
-latex_documents = [
-  ('index', 'CERCOUserManual.tex', u'CERCO User Manual',
-   u'CERCO', 'manual'),
-]
+# (source start file, target name, title, author, documentclass [howto/manual]).
+latex_documents = [('index', 'doc-drdsi.tex', u'DRDSI Documentation', u'ETj (GeoSolutions)', 'manual')]
+
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -187,3 +187,12 @@ latex_logo = 'geosolutions.png'
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+
+# -- Options for manual page output --------------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [('index', 'doc-drdsi', u'DRDSI Documentation', [u'ETj (GeoSolutions)'], 1)]
+
+
