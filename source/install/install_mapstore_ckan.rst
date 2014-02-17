@@ -84,7 +84,96 @@ Below the configurations parameters to use::
 * ``composerPath``: the relative URL of the MapStore advanced viewer (used inside the CKAN preview page in order to open the advanced MapStore viewer in a separate browser page). 
 * ``mapStoreBaseURL``: the MapStore base URL.
 
+===========================================
+Enable the basket for multiple WMS preview
+===========================================
 
+With the MapStore CKAN extension you have also the possibility to enable a basket component that allows 
+to select multiple WMS resource for a preview. This extension provides also a separate button inside the dataset list items 
+in order to visualize, directly from the dataset list page, a preview on Map of the dataset WMS resource. 
+
+   .. figure:: img/basket_overview.jpeg
+      :width: 600
+ 		  
+      The basket component
+
+The basket control uses a template snippets that you have to enable in order to use it.
+In order to enable this component you need to follow the steps below:
+
+* Add the basket snippet to the relevant template package inside the 'block secondary_content' element::
+
+	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/template/package/search.html
+
+  for example::
+  
+		{% block secondary_content %}
+		  {% snippet 'snippets/organization.html', organization=c.group_dict, show_nums=true %}
+
+		  {% snippet "snippets/mapstore_basket.html" %}
+		  
+		  {% block organization_facets %}{% endblock %}
+		{% endblock %}
+  
+  and:: 	
+	
+	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/template/organization/read_base.html
+	
+  for example::
+  
+		{% block secondary_content %}
+		  {% snippet 'snippets/organization.html', organization=c.group_dict, show_nums=true %}
+
+		  {% snippet "snippets/mapstore_basket.html" %}
+		  
+		  {% block organization_facets %}{% endblock %}
+		{% endblock %}
+
+* Then you have to edit the 'package_item' CKAN template::
+
+	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/template/snippets/package_item.html
+
+  adding the fragment below at the end of the container block::
+
+	...
+	
+	<!-- -------------------------------------------------------------------------- -->
+	<!-- New elements for the MapStore extension: The control of the basket. -->
+	<!-- -------------------------------------------------------------------------- -->
+
+	{% if package.resources and not hide_resources %}
+	  <ul class="dataset-resources unstyled" style="float: right; display: inline-block;">
+		{% set index = 0 %}
+		{% for id in h.dict_list_reduce(package.resources, 'id') %}	
+		   
+			{% set format = package.resources[index].format %}	
+						
+			{% if format == 'wms' or format == 'mapstore' %}
+				
+				{% set url = package.resources[index].url %}
+				{% set name = package.resources[index].name %}				
+				
+				{% if format == 'wms'%}
+					<li>
+						<a id="cart-{{ id }}" onClick="javascript:basket_utils.prepareKeyForBasket(this.id, &#34;{{url}}&#34;, &#34;{{name}}&#34;, &#34;{{format}}&#34;);" class="label basket-label-cart"><i class="icon-shopping-cart"></i><spam> Add to Cart</spam></a>
+					</li>
+				{% endif %}
+				
+				<li>
+					<a id="{{ id }}" onClick="javascript:basket_utils.preparePreviewURL(&#34;{{ id }}&#34;, &#34;{{url}}&#34;, &#34;{{name}}&#34;, &#34;{{format}}&#34;);" class="label basket-label-preview"><i class="icon-map-marker"></i><spam> Preview on Map</spam></a>
+				</li>
+
+			{% endif %}
+
+			{% set index = index + 1 %}
+			
+		{% endfor %}
+	  </ul>
+	{% endif %}
+	
+	<!-- -------------------------------------------------------------------------- -->
+
+	{% endblock %}
+	
 =======================
 MapStore harvest plugin
 =======================
