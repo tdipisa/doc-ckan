@@ -128,7 +128,6 @@ See also :ref:`application_ports`.
 Automatic startup
 -----------------
 
-
 Create the file ``/etc/init.d/solr`` and insert :download:`this content <../resources/solr>`.
 
 Once downloaded, make it executable ::
@@ -138,6 +137,12 @@ Once downloaded, make it executable ::
 and set it as autostarting  ::
 
    chkconfig --add solr
+   
+.. note::    
+   If under Ubuntu, you have to use this command instead::
+  
+      update-rc.d  solr start 90 2 3 4 5 . stop 10 0 1 6 .
+   
 
 Final configurations
 --------------------
@@ -161,6 +166,17 @@ Install the software packages needed by CKAN::
                python-repoze-who-friendlyform python-tempita python-zope-interface \ 
                policycoreutils-python git postgresql92-devel
 
+RedHat will complain about:: 
+
+   No package python-repoze-who-plugins-sa available.
+
+.. note::    
+   Under Ubuntu, you have to use this command instead::
+   
+      apt-get install gcc make python-dev libxslt-dev python-babel python-psycopg2 python-lxml python-pylons \
+                   python-repoze.who python-tempita python-zope.interface git postgresql-server-dev-9.2
+       
+
 ====================
 Creating a CKAN user
 ====================
@@ -183,7 +199,7 @@ will eventually be able to be served out via httpd ::
 
    chmod 755 /usr/lib/ckan
 
-Modify the defaults and the current file context of the newly created directory 
+Under CentOS and RedHay you may have to modify the defaults and the current file context of the newly created directory 
 such that it is able to be served out via httpd ::
 
    semanage fcontext --add --ftype -- --type httpd_sys_content_t "/usr/local/ckan(/.*)?"
@@ -236,7 +252,7 @@ Download and install CKAN::
 
    pip install -e 'git+https://github.com/ckan/ckan.git@release-v2.2#egg=ckan'
    
-Enable pgsql92 path::   
+Enable pgsql92 path (not needed for Ubuntu)::   
    
    export PATH=$PATH:/usr/pgsql-9.2/bin/
    
@@ -255,7 +271,7 @@ Configure in Solr the CKAN schema::
    service solr stop
    cd /etc/solr/ckan/conf/ 
    mv schema.xml schema.xml.original
-   ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema-2.0.xml /etc/solr/ckan/conf/schema.xml   
+   ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/ckan/conf/schema.xml   
    chown tomcat: schema.xml
    service solr start
 
@@ -395,6 +411,23 @@ in order to allow http proxying, issue the following command ::
    setsebool -P httpd_can_network_connect 1
 
 
+==========================================
+Apache httpd configuration (Ubuntu/Debian)
+==========================================
+
+Create the file ::
+
+   vim /etc/apache2/sites-available/ckan
+   
+and insert :download:`this content <../resources/ubuntu_apache_ckan>`.
+   
+Then disable default site and enable new site configuration::   
+
+   a2dissite default
+   a2ensite ckan
+   a2enmod proxy_http
+   service apache2 reload
+
 ================
 DataStore plugin
 ================
@@ -453,7 +486,7 @@ File storage plugin
 Create directory ::
 
    mkdir -p /var/lib/ckan/upload
-   chown ckan: /var/lib/ckan/upload
+   chown ckan: -R /var/lib/ckan
 
 
 Set the storage config in ``production.ini``::
@@ -469,6 +502,12 @@ As root install::
    yum install redis
    chkconfig redis on
    service redis start
+   
+.. note::
+   On Ubuntu install using::
+   
+      apt-get install redis-server
+      
 
 Installing ckan harvester
 -------------------------
@@ -481,12 +520,11 @@ As user ``ckan``::
    pip install -r pip-requirements.txt
    
 .. note::
-   I (etj, 20131204) found that the redis module is not installed, so it will throw an error
-   when running the harvesting commands.
+   You have to issue the command (within the virtualenv) ::
    
-   You can install it by running (within the virtualenv) the command::
-   
-       pip install redis       
+       pip install redis
+       
+   according to https://github.com/ckan/ckanext-harvest/issues/88
 
 Edit file ``/etc/ckan/default/production.ini`` and add the harvest related plugins::  
 
@@ -537,7 +575,8 @@ Upgrade libxml2
 ---------------
 
 .. important:: 
-   As reported on https://github.com/okfn/ckanext-spatial:
+   As reported on http://docs.ckan.org/projects/ckanext-spatial/en/latest/install.html#when-running-the-spatial-harvesters
+   and https://github.com/okfn/ckanext-spatial :
    
       NOTE: The ISO19139 XSD Validator requires system library libxml2 v2.9 (released Sept 2012).
 
@@ -546,7 +585,10 @@ Upgrade libxml2
       ll /usr/lib64/libxml*
    
 
-Perform the upgrade::
+CentOS
+''''''
+
+On CentOS you can perform the upgrade using these packages::
    
    yum install readline-devel xz-devel
    
@@ -556,6 +598,50 @@ Perform the upgrade::
    wget ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/X11:/Enlightenment:/EWebKit/CentOS_CentOS-6/x86_64/libxml2-tools-2.9.1-99.1.x86_64.rpm
    
    rpm -U --force libxml2-2-2.9.1-99.1.x86_64.rpm libxml2-devel-2.9.1-99.1.x86_64.rpm libxml2-tools-2.9.1-99.1.x86_64.rpm
+
+RedHat
+''''''
+   
+On RedHat you won't be able to install them, because you would get::
+
+   errore: Dipendenze fallite:
+        libxml2 = 2.7.6-14.el6 necessario a (installato) libxml2-python-2.7.6-14.el6.x86_64
+        
+Su you'll better build the lib from source.
+
+Get the source RPM::
+
+   wget ftp://xmlsoft.org/libxml2/libxml2-2.9.0-1.src.rpm
+     
+Create a user for building, and copy the SRPM in its home::
+
+   adduser -m -s /bin/bash build
+   cp libxml2-2.9.0-1.src.rpm /home/build/
+     
+``su`` as ``build`` and build the package::
+
+   su - build
+   rpmbuild --rebuild  libxml2-2.9.0-1.src.rpm
+     
+Back as root, and install the library::
+
+   cd /home/build/rpmbuild/RPMS/x86_64
+   rpm -U libxml2-2.9.0-1.x86_64.rpm libxml2-devel-2.9.0-1.x86_64.rpm libxml2-python-2.9.0-1.x86_64.rpm
+   
+Ubuntu 12.04
+''''''''''''
+
+Download the ``.deb`` files::
+
+   wget https://launchpad.net/~ubuntu-security/+archive/ppa/+build/4538871/+files/libxml2_2.9.0%2Bdfsg1-4ubuntu4.1_amd64.deb
+   wget https://launchpad.net/~ubuntu-security/+archive/ppa/+build/4538871/+files/python-libxml2_2.9.0%2Bdfsg1-4ubuntu4.1_amd64.deb
+   wget https://launchpad.net/~ubuntu-security/+archive/ppa/+build/4538871/+files/libxml2-utils_2.9.0%2Bdfsg1-4ubuntu4.1_amd64.deb
+   wget https://launchpad.net/~ubuntu-security/+archive/ppa/+build/4538871/+files/libxml2-dev_2.9.0%2Bdfsg1-4ubuntu4.1_amd64.deb
+   wget http://mirrors.kernel.org/ubuntu/pool/main/x/xz-utils/liblzma5_5.1.1alpha+20120614-1_amd64.deb
+   
+Install them::
+
+   dpkg -i *.deb
 
 
 DB configuration
@@ -609,34 +695,104 @@ You may also specify the default SRID::
 Then you may force the validation profiles when harvesting::
 
    ckan.spatial.validator.profiles = iso19139,gemini2,constraints
+   
+CKAN stops on validation errors by default. 
+If you want to import also metadata that fails the XSD validation you need to add this line to the 
+.ini file::
+   
+   ckanext.spatial.harvest.continue_on_validation_errors = True
+   
+This same behavior can also be defined on a per-source base, setting 
+``continue_on_validation_errors`` in the source configuration.
+
+.. _configure_spatial_search:
 
 Configure Spatial search
 ''''''''''''''''''''''''
 
-In order to show the widget for the spatial search, you have to 
-**TODO**
+.. hint::
+   Ref info page at http://ckan.readthedocs.org/projects/ckanext-spatial/en/latest/spatial-search.html
+
+In order to show the widget for the spatial search, you have to:
+
+* index the bbox in Solr and 
+* add the spatial search widget
+
+Solr
+____
+
+Edit file ``/etc/ckan/default/production.ini`` and add this line to configure the spatial backend:: 
+
+   ckanext.spatial.search_backend = solr
+
+Edit the Solr schema file (remember, it's a symlink)::
+
+   vim /etc/solr/ckan/conf/schema.xml
+   
+and add the ``field`` elements::
+
+   <fields>
+      <!-- ... -->
+      <field name="bbox_area" type="float" indexed="true" stored="true" />
+      <field name="maxx" type="float" indexed="true" stored="true" />
+      <field name="maxy" type="float" indexed="true" stored="true" />
+      <field name="minx" type="float" indexed="true" stored="true" />
+      <field name="miny" type="float" indexed="true" stored="true" />
+   </fields>
+
+Then update Solr clause configuration.
+As ``root``, edit the file ``/etc/solr/ckan/conf/solrconfig.xml`` and 
+update the value of ``maxBooleanClauses`` to 16384.
+
+Restart Solr to make it read the config changes::
+
+   service solr restart
+   
+If your CKAN instance already contained spatial datasets, you may want to reindex the catalog::
+
+   . /usr/lib/ckan/default/bin/activate
+   paster --plugin=ckan search-index rebuild_fast --config=/etc/ckan/default/production.ini
+      
+
+Spatial search widget
+_____________________
+
+Edit the file::
+
+   vim /usr/lib/ckan/default/src/ckan/ckan/templates/package/search.html
+   
+and add ::
+
+   {% snippet "spatial/snippets/spatial_query.html" %}
+   
+inside the ``{% block secondary_content %}`` .
+
+You have to restart CKAN to see the search map.
 
 Configure map extents
 '''''''''''''''''''''
 
-In order to display the map that shows the map extents,  
-**TODO**
+.. hint::
+   Ref info page at http://ckan.readthedocs.org/projects/ckanext-spatial/en/latest/spatial-search.html#spatial-search-widget
+
+In order to display the map that shows the extents, edit the file::
+
+   vim /usr/lib/ckan/default/src/ckan/ckan/templates/package/read.html
+   
+and add ::
+
+   {% set dataset_extent = h.get_pkg_dict_extra(c.pkg_dict, 'spatial', '') %}
+   {% if dataset_extent %}
+      {% snippet "spatial/snippets/dataset_map.html", extent=dataset_extent %}
+   {% endif %}
+
+inside ``{% block primary_content_inner %}`` anywhere after ``{{ super() }}``.
 
 
-Update Solr clause configuration
---------------------------------
 
-As ``root``, edit the file ``/etc/solr/ckan/conf/solrconfig.xml`` and 
-update the value of ``maxBooleanClauses`` to 16384.
-
-Then restart Solr::
-
-   service solr restart
-
-
-=========================
-supervisord configuration
-=========================
+==========================================
+supervisord configuration (CentOS, RedHat)
+==========================================
 
 CKAN does not provide a default script for autostarting; we'll use the *supervisord* deamon to do that.
 
@@ -695,6 +851,71 @@ Run supervisord::
 
    /etc/init.d/supervisord start
 
+==========================================
+supervisord configuration (Ubuntu, Debian)
+==========================================
+
+CKAN does not provide a default script for autostarting; we'll use the *supervisord* deamon to do that.
+
+As root::
+
+   apt-get install supervisor
+
+Create the file  ``/etc/supervisor/conf.d/ckan.conf`` and add the following lines to handle CKAN::
+
+   [program:ckan]
+   command=/usr/lib/ckan/default/bin/paster serve /etc/ckan/default/production.ini
+   user=ckan
+   autostart=true
+   autorestart=true
+   numprocs=1
+   log_stdout=true
+   log_stderr=true
+   stdout_logfile=/var/log/ckan/out.log
+   stderr_logfile=/var/log/ckan/err.log
+   logfile=/var/log/ckan/ckan.log
+   startsecs=10
+   startretries=3
+
+Create the file  ``/etc/supervisor/conf.d/ckan_harvest.conf`` and add the following lines to handle 
+the harvesters::
+
+   [program:ckan_gather_consumer]
+   command=/usr/lib/ckan/default/bin/paster --plugin=ckanext-harvest harvester gather_consumer --config=/etc/ckan/default/production.ini
+   user=ckan
+   autostart=true
+   autorestart=true
+   numprocs=1
+   log_stdout=true
+   log_stderr=true
+   stdout_logfile=/var/log/ckan/gather_out.log
+   stderr_logfile=/var/log/ckan/gather_err.log
+   logfile=/var/log/ckan/gather.log
+   startsecs=10
+   startretries=3
+
+   [program:ckan_fetch_consumer]
+   command=/usr/lib/ckan/default/bin/paster --plugin=ckanext-harvest harvester fetch_consumer --config=/etc/ckan/default/production.ini
+   user=ckan
+   autostart=true
+   autorestart=true
+   numprocs=1
+   log_stdout=true
+   log_stderr=true
+   stdout_logfile=/var/log/ckan/fetch_out.log
+   stderr_logfile=/var/log/ckan/fetch_err.log
+   logfile=/var/log/ckan/fetch.log
+   startsecs=10
+   startretries=3
+
+Make supervisor aware of the new scripts::
+
+   supervisorctl update
+
+Run supervisord::
+
+   /etc/init.d/supervisord start
+
 
 .. _reconfig_ckan:
    
@@ -743,8 +964,10 @@ System account ``ckan`` was created as a *nologin* account so you don't need to 
 Document changelog
 ==================
 
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     | 2014-02-06 | ETj    | Initial revision |
-+---------+------------+--------+------------------+
++---------+------------+--------+-----------------------------------+
+| Version | Date       | Author | Notes                             |
++=========+============+========+===================================+
+| 1.0     | 2014-02-06 | ETj    | Initial revision                  |
++---------+------------+--------+-----------------------------------+
+|         | 2014-02-17 | ETj    | Update doc about solr schema file |
++---------+------------+--------+-----------------------------------+

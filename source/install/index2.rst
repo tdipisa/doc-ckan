@@ -1,4 +1,4 @@
-.. _installation_index:
+.. _installation_index2:
 
 Installation
 ============
@@ -7,10 +7,10 @@ Installation
    :maxdepth: 2
    
    setup_vm.rst
-   setup_centos.rst
+   setup_ubuntu1204.rst   
    install_ckan.rst
-   install_ckan_otherext.rst
    install_mapstore.rst
    install_mapstore_ckan.rst
+   install_gn.rst
    customize_ckan_gui.rst
 

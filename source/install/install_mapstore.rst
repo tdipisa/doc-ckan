@@ -103,7 +103,7 @@ Insert this content::
    export CATALINA_HOME=/opt/tomcat/
    export CATALINA_PID=$CATALINA_BASE/work/pidfile.pid
 
-   GEOSTORE_OVR_FILE=file:/$CATALINA_BASE/conf/geostore.properties
+   GEOSTORE_OVR_FILE=file:$CATALINA_BASE/conf/geostore.properties
    
    export JAVA_OPTS="$JAVA_OPTS -Xms512m -Xmx1024m"
    export JAVA_OPTS="$JAVA_OPTS -Dgeostore-ovr=$GEOSTORE_OVR_FILE"     
@@ -117,14 +117,17 @@ Edit server.xml
 ---------------
 
 We need to assign 3 ports to this catalina instance.
-We'll use 
+
+Edit file ::
+
+   vim /var/lib/tomcat/mapstore/conf/server.xml
+
+and change the connection ports in this way: 
 
 - 8006 for commands to catalina instance
 - 8081 for the HTTP connections
 - 8010 for the AJP connections
 
-
-Remember that you may change these ports in the file `/var/lib/tomcat/mapstore/conf/server.xml`.
 
 See also :ref:`application_ports`.
 
@@ -148,10 +151,14 @@ Once downloaded, make it executable ::
 and set it as autostarting  ::
 
    chkconfig --add mapstore
+
+.. note::    
+   If using Ubuntu, you have to use this command instead::
+  
+      update-rc.d mapstore start 90 2 3 4 5 . stop 10 0 1 6 .
+      
    
 .. _init_geostore_db:
-
-
    
 Init DB
 -------
@@ -189,6 +196,14 @@ Create the file ``/etc/httpd/conf.d/80-mapstore.conf`` and insert these lines::
    ProxyPassReverse /geostore   ajp://localhost:8010/geostore
    ProxyPass        /http_proxy ajp://localhost:8010/http_proxy                                                                                                                                                                                                                           
    ProxyPassReverse /http_proxy ajp://localhost:8010/http_proxy
+
+.. note::    
+   If using Ubuntu, you have to put these lines in file ::
+   
+      vim /etc/apache2/sites-available/ckan 
+      
+   just before the ``ProxyPass`` directive redirecting the ``/``.    
+
 
 Then reload the configuration for apache httpd::
 

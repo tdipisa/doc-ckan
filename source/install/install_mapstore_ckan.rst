@@ -67,8 +67,8 @@ So the connections parameters to the MapStore instance must be specified.
 
 Please check/modify these values inside the ``preview_config.js`` file::
 
-   $ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/theme/public/preview_config.js
-
+   $ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/preview/preview_config.js
+   
 Below the configurations parameters to use::
 
    var preview_config = {
@@ -84,9 +84,10 @@ Below the configurations parameters to use::
 * ``composerPath``: the relative URL of the MapStore advanced viewer (used inside the CKAN preview page in order to open the advanced MapStore viewer in a separate browser page). 
 * ``mapStoreBaseURL``: the MapStore base URL.
 
-===========================================
+
+==========================================
 Enable the basket for multiple WMS preview
-===========================================
+==========================================
 
 With the MapStore CKAN extension you have also the possibility to enable a basket component that allows 
 to select multiple WMS resource for a preview. This extension provides also a separate button inside the dataset list items 
@@ -102,7 +103,7 @@ In order to enable this component you need to follow the steps below:
 
 * Add the basket snippet to the relevant template package inside the 'block secondary_content' element::
 
-	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/template/package/search.html
+	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/templates/package/search.html
 
   for example::
   
@@ -116,7 +117,7 @@ In order to enable this component you need to follow the steps below:
   
   and:: 	
 	
-	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/template/organization/read_base.html
+	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/templates/organization/read_base.html
 	
   for example::
   
@@ -179,6 +180,10 @@ MapStore harvest plugin
 =======================
 
 
+Should you use the mapstore harvester, you need to add the ``harvester`` sysadmin
+in order to comply with some CKAN internal handling::
+   
+   paster --plugin=ckan sysadmin add harvest -c /etc/ckan/default/production.ini
 
 
 ==================

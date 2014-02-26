@@ -15,10 +15,11 @@ If the log file reports a::
 
    (ProgrammingError) permission denied for relation _table_metadata
    
-try resetting the grants for the ``datastore`` user::
+try resetting the ``select`` grants::
 
    su - postgres -c "psql datastore"
    GRANT SELECT ON ALL TABLES IN SCHEMA public TO datastore;
+   GRANT SELECT ON ALL TABLES IN SCHEMA public TO datastorero;
 
 No WMS resources from Comune Firenze
 ------------------------------------

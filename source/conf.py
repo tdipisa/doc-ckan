@@ -46,7 +46,7 @@ copyright = u'2014 GeoSolutions'
 # The short X.Y version.
 version = '1.0'
 # The full version, including alpha/beta/rc tags.
-release = '20140213'
+release = '20140226'
 
 language = 'en'
 
