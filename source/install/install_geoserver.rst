@@ -185,42 +185,6 @@ Edit the geoserver script as following::
 and set it as autostarting  ::
 
    chkconfig --add geoserver
-
-Setting watchdog
-----------------
-
-Copy the script and configure it::
-
-   cp /root/download/geoserver/scripts-master/watchdog/watchdog.sh.geoserver /var/lib/tomcat/geoserver/bin/watchdog.sh
-   chmod +x /var/lib/tomcat/geoserver/bin/watchdog.sh
-   
-Edit the watchdog script as following::
-
-   LAYER="sf:roads"
-   GSURL="http://127.0.0.1:8083/geoserver"
-   WFSURL="$GSURL/wfs?request=GetFeature&typeName=${LAYER}&maxfeatures=1"
-   
-   #set the connection timeout (in seconds)
-   TIMEOUT=30
-   
-   # seconds to wait to recheck the service (this is not cron)
-   # tomcat restart time
-   TOMCAT_TIMEOUT=50
-   
-   FILTER="geoserver"
-   
-   # the service to restart
-   # should be a script placed here:
-   # /etc/init.d/
-   # 
-   SERVICE="geoserver"
-   CMD_START="service geoserver stop" 
-   CMD_STOP="service geoserver start"
-   
-   # the output file to use as log
-   # must exists otherwise the stdout will be used
-   # NOTE: remember to logrotate this file!!!
-   LOGFILE="/var/lib/geoserver/logs/watchdog.log.geoserver"
    
 Configure httpd
 ---------------
