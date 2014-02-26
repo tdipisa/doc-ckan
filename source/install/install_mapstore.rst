@@ -35,7 +35,7 @@ Download the `.war` files needed for a full MapStore installation::
 
    cd /root/download
    wget http://demo.geo-solutions.it/share/mapstore/mapstore.war
-   wget http://maven.geo-solutions.it/it/geosolutions/geostore/geostore-webapp/1.1-SNAPSHOT/geostore-webapp-1.1-SNAPSHOT-postgresql.war
+   wget http://geoserver.geo-solutions.it/geostore/downloads/1.1.x/nightly/geostore-1.1.x-extjs-2014-02-26-war
    wget http://maven.geo-solutions.it/proxy/http_proxy/1.0.4/http_proxy-1.0.4.war   
 
 Setup tomcat base
@@ -45,7 +45,7 @@ Create catalina base directory for MapStore::
 
    cp -a /var/lib/tomcat/base/  /var/lib/tomcat/mapstore
    cp /root/download/mapstore.war              /var/lib/tomcat/mapstore/webapps/mapstore.war
-   cp /root/download/geostore-webapp-1.1-SNAPSHOT-postgresql.war /var/lib/tomcat/mapstore/webapps/geostore.war
+   cp /root/download/geostore-1.1.x-extjs-2014-02-26-war /var/lib/tomcat/mapstore/webapps/geostore.war
    cp /root/download/http_proxy-1.0.4.war      /var/lib/tomcat/mapstore/webapps/http_proxy.war
 
 
@@ -88,7 +88,6 @@ and add this content (setting the proper password) ::
    
    See :ref:`init_geostore_db`  
 
-
 setenv.sh
 ---------
 
@@ -111,6 +110,8 @@ Insert this content::
 and make it executable::
 
    chmod +x /var/lib/tomcat/mapstore/bin/setenv.sh
+
+Edit:
 
 
 Edit server.xml
@@ -208,7 +209,31 @@ Create the file ``/etc/httpd/conf.d/80-mapstore.conf`` and insert these lines::
 Then reload the configuration for apache httpd::
 
    service httpd reload
-   
+
+Configuring geostore
+--------------------
+
+Add local geoserver mapping (note this needs local geoserver installation)
+Edit:
+
+   vim /var/lib/tomcat/mapstore/webapps/mapstore/WEB-INF/app/static/config/mapStoreConfig.js
+
+Adding:
+
+   "gsSources":{
+       "geoserver": {
+                        "ptype": "gxp_wmssource",
+                        "title": "GeoServer",
+                        "url": "/geoserver/ows"
+                },
+       ...
+    }
+
+Create the category in GeoStore for the mapstore::
+
+  curl -u $USER:$PASS -XPOST -H 'Content-type: text/xml' -d '<Category><name>MAP</name></Category>' http://localhost/geostore/rest/categories
+
+
 ==================
 Document changelog
 ==================
@@ -217,4 +242,6 @@ Document changelog
 | Version | Date       | Author | Notes            |
 +=========+============+========+==================+
 | 1.0     | 2014-02-10 | ETj    | Initial revision |
++---------+------------+--------+------------------+
+| 1.1     | 2014-02-26 | Carlo C|Configure geostore|
 +---------+------------+--------+------------------+

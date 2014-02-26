@@ -7,7 +7,8 @@ Installation
    :maxdepth: 2
    
    setup_vm.rst
-   setup_ubuntu1204.rst   
+   setup_ubuntu1204.rst
+   install_geoserver.rst
    install_ckan.rst
    install_mapstore.rst
    install_mapstore_ckan.rst
