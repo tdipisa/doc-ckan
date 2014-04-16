@@ -233,6 +233,13 @@ Create the category in GeoStore for the mapstore::
 
   curl -u $USER:$PASS -XPOST -H 'Content-type: text/xml' -d '<Category><name>MAP</name></Category>' http://localhost/geostore/rest/categories
 
+  
+Configuring MapStore
+--------------------
+
+.. warning:: More configuration are are mandatory for MapStore for the Ckan integration. Please see the next section for more details.
+
+
 
 ==================
 Document changelog
