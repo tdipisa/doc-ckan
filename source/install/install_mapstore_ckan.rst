@@ -17,6 +17,7 @@ for CKAN.
 It is expected that CKAN and MapStore have already been properly installed and configured as described 
 in :ref:`install_ckan` and in :ref:`install_mapstore`.
 
+.. _extension_mapstore:
 
 ==================
 MapStore extension
@@ -185,13 +186,3 @@ in order to comply with some CKAN internal handling::
    
    paster --plugin=ckan sysadmin add harvest -c /etc/ckan/default/production.ini
 
-
-==================
-Document changelog
-==================
-
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     | 2014-02-11 | ETj    | Initial revision |
-+---------+------------+--------+------------------+

@@ -1,4 +1,4 @@
-.. _setup_centos:
+.. _setup_system:
 
 ####################################
 Installing basic packages (RH based)
@@ -387,16 +387,3 @@ Creating `base/` template directory
   mkdir -p /var/lib/tomcat/base/{bin,conf,logs,temp,webapps,work}
   cp /opt/tomcat/conf/* /var/lib/tomcat/base/conf/
 
-
-
-==================
-Document changelog
-==================
-
-+---------+------------+--------+--------------------+
-| Version | Date       | Author | Notes              |
-+=========+============+========+====================+
-| 1.0     | 2014-02-06 | ETj    | Initial revision   |
-+---------+------------+--------+--------------------+
-|         | 2014-02-17 | ETj    | Add: JDK on RedHat |
-+---------+------------+--------+--------------------+

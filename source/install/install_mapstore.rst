@@ -12,7 +12,7 @@ Introduction
 In this document you'll only find specific information for installing MapStore and some required ancillary 
 applications (GeoStore, http-proxy). 
 
-It is expected that the base system has already been properly installed and configured as described in :ref:`setup_centos`.
+It is expected that the base system has already been properly installed and configured as described in :ref:`setup_system`.
 
 In such document there are information about how to install some required base components, such as PostgreSQL, 
 Apache HTTPD, Oracle Java, Apache Tomcat.
@@ -209,12 +209,3 @@ Then reload the configuration for apache httpd::
 
    service httpd reload
    
-==================
-Document changelog
-==================
-
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     | 2014-02-10 | ETj    | Initial revision |
-+---------+------------+--------+------------------+
