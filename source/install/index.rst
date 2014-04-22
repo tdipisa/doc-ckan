@@ -11,6 +11,7 @@ Installation
    install_ckan.rst
    install_ckan_otherext.rst
    install_mapstore.rst
+   mapstore_config.rst
    install_mapstore_ckan.rst
    customize_ckan_gui.rst
 

@@ -34,8 +34,8 @@ Download packages
 Download the `.war` files needed for a full MapStore installation::
 
    cd /root/download
-   wget http://demo.geo-solutions.it/share/mapstore/mapstore.war
-   wget http://maven.geo-solutions.it/it/geosolutions/geostore/geostore-webapp/1.1-SNAPSHOT/geostore-webapp-1.1-SNAPSHOT-postgresql.war
+   wget http://demo.geo-solutions.it/share/mapstore/mapstore.war   
+   wget  wget http://maven.geo-solutions.it/it/geosolutions/geostore/geostore-webapp/1.1-SNAPSHOT/geostore-webapp-1.1-SNAPSHOT-postgresql.war
    wget http://maven.geo-solutions.it/proxy/http_proxy/1.0.4/http_proxy-1.0.4.war   
 
 Setup tomcat base
@@ -87,7 +87,6 @@ and add this content (setting the proper password) ::
    **destroy** the db content.
    
    See :ref:`init_geostore_db`  
-
 
 setenv.sh
 ---------
@@ -208,4 +207,12 @@ Create the file ``/etc/httpd/conf.d/80-mapstore.conf`` and insert these lines::
 Then reload the configuration for apache httpd::
 
    service httpd reload
-   
+
+  
+Configuring MapStore
+--------------------
+
+.. warning:: More configuration are are mandatory for MapStore for the Ckan integration. Please see the next section for more details.
+
+
+

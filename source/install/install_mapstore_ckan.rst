@@ -73,10 +73,12 @@ Please check/modify these values inside the ``preview_config.js`` file::
 Below the configurations parameters to use::
 
    var preview_config = {
-      viewerConfigName: "preview",
-      viewerPath: "/viewer",
-      composerPath: "/composer",
-      mapStoreBaseURL: "http://84.33.2.79/mapstore"
+		viewerConfigName: "preview",
+		viewerPath: "/viewer",
+		composerPath: "/composer",
+		mapStoreBaseURL: "http://84.33.2.79/mapstore"
+		basketStatus: true,
+		storageMethod: "sessionstorage"
    }
 
 * ``viewerConfigName``: the MapStore WebGIS configuration to use (see 
@@ -84,7 +86,16 @@ Below the configurations parameters to use::
 * ``viewerPath``: the relative URL of the MapStore viewer (used for the basic preview inside the CKAN resource page).
 * ``composerPath``: the relative URL of the MapStore advanced viewer (used inside the CKAN preview page in order to open the advanced MapStore viewer in a separate browser page). 
 * ``mapStoreBaseURL``: the MapStore base URL.
+* ``basketStatus``: Set to true if you want to see the icon related to the WMS status inside the Shopping Cart items (the icon show the status of teh WMS resource after the harves procedure).
+* ``storageMethod``: the storage method to use in order to store usage information about the Shopping Cart status. Valid values are: 'localstorage', 'sessionstorage' or 'cookies'.
 
+.. note::
+
+		 **localstorage**: The localStorage object stores the data with no expiration date. The data will not be deleted when the browser is closed, and will be available the next day, week, or year.
+		 
+		 **sessionstorage**: The sessionStorage object is equal to the localStorage object, except that it stores the data for only one session. The data is deleted when the user closes the browser window.
+		 
+		 **cookies**: Use the standar cookie behavior.  
 
 ==========================================
 Enable the basket for multiple WMS preview
@@ -186,3 +197,19 @@ in order to comply with some CKAN internal handling::
    
    paster --plugin=ckan sysadmin add harvest -c /etc/ckan/default/production.ini
 
+<<<<<<< HEAD
+=======
+
+==================
+Document changelog
+==================
+
++---------+------------+--------+------------------+
+| Version | Date       | Author | Notes            |
++=========+============+========+==================+
+| 1.0     | 2014-02-11 | ETj    | Initial revision |
++---------+------------+--------+------------------+
+| 1.0     | 2014-04-16 | TDP    | MapStore Install |
++---------+------------+--------+------------------+
+
+>>>>>>> 2c909df73361b3647c6e98ed7b2be53b0e962a66
