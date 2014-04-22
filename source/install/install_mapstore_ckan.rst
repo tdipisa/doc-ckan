@@ -197,19 +197,3 @@ in order to comply with some CKAN internal handling::
    
    paster --plugin=ckan sysadmin add harvest -c /etc/ckan/default/production.ini
 
-<<<<<<< HEAD
-=======
-
-==================
-Document changelog
-==================
-
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     | 2014-02-11 | ETj    | Initial revision |
-+---------+------------+--------+------------------+
-| 1.0     | 2014-04-16 | TDP    | MapStore Install |
-+---------+------------+--------+------------------+
-
->>>>>>> 2c909df73361b3647c6e98ed7b2be53b0e962a66

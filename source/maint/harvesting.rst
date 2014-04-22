@@ -47,6 +47,7 @@ The JSON configuration allows these parameters:
    
 .. note:: 
    ``default_tags`` and ``default_extras`` will be available only if, when installing ckanext-spatial, these commits
-   have been included manually   
+   have been included manually::
+      
       https://github.com/ckan/ckanext-spatial/pull/58
            

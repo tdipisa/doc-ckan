@@ -1,4 +1,4 @@
-.. _install_mapstore_ext:
+.. _config_mapstore:
 
 ####################
 Configuring MapStore
@@ -11,29 +11,32 @@ Configuring MapStore
 Introduction
 ============
 
-In this document you'll only find some specific information for configuring Map and background layers in MapStore. 
+In this document you'll find specific information for configuring Map and background layers in MapStore. 
 
 It is expected that CKAN and MapStore have already been properly installed and configured as described 
 in :ref:`install_ckan` and in :ref:`install_mapstore`.
 
-MapStore use a different template (and a related configuration) for each WebGIS mode:
+MapStore uses a different template (and a related configuration) for each WebGIS mode:
 
-- composer.html is the template used for the advanced viewer (his configuration is inside the 'mapStoreConfig.js' file)::
+- ``composer.html`` is the template used for the advanced viewer 
+  (its configuration is inside the ``mapStoreConfig.js`` file)::
 
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/templates/composer.html
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/mapStoreConfig.js
 
-- viewer.html is the template used for the simple viewer (his configuration is inside the 'viewer.js' file)::
+- ``viewer.html`` is the template used for the simple viewer 
+  (its configuration is inside the ``viewer.js`` file)::
 
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/templates/viewer.html
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/viewer.js
 		
-- embedded.html is the template used for the embedded preview in Ckan (his configuration is inside the 'preview.js' file)::
+- ``embedded.html`` is the template used for the embedded preview in CKAN 
+  (its configuration is inside the ``preview.js`` file)::
 
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/templates/embedded.html
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/preview.js
 		
-.. note:: The templates used for the Ckan integration are: composer.html and embedded.html
+.. note:: The templates used for the CKAN integration are: ``composer.html`` and ``embedded.html``
 
 ==============================
 Setting the Base configuration
@@ -44,11 +47,11 @@ Setting the Base configuration
 Before running MapStore with the 'ckanext-mapstore' extension some mandatory configuration refinement 
 must be provided  to the standard one:
 
-1) Open the 'mapStoreConfig.js' file::
+1) Open the ``mapStoreConfig.js`` file::
 
 	$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/mapStoreConfig.js
 	
-2) Find the 'gxp_addlayer' plugin configuration and and changes properties using the values below::
+2) Find the ``gxp_addlayer`` plugin configuration and and changes properties using the values below::
 
 		...
 		{
@@ -61,7 +64,7 @@ must be provided  to the standard one:
 		}
 		...
 
-3) Append the following plugin configuration to the 'customTools' property::
+3) Append the following plugin configuration to the ``customTools`` property::
 
 		...
 		{
@@ -74,13 +77,13 @@ must be provided  to the standard one:
 		}
 		...
 		
-	.. note:: This is the plugin that allows the visualization of the imported resources from Ckan in a tree tool. 
+	.. note:: This is the plugin that allows the visualization of the imported resources from CKAN in a tree tool. 
 		
-4) Then open the 'preview.js' file::
+4) Then open the ``preview.js`` file::
 
 	$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/preview.js
 	
-5) Find the 'gxp_addlayer' plugin configuration and and changes properties using the values below::
+5) Find the ``gxp_addlayer`` plugin configuration and changes properties using the values below::
 			
 		...
 		{
@@ -101,6 +104,7 @@ Setting the MapStore Map Projection
 
 In order to change or configure a Projection in MapStore one or more of the configuration files described 
 above should be modified.
+
 The Projection information is a part of the Map configuration, as an instance::
 
 	"map": {
@@ -139,9 +143,9 @@ So we will have for example::
 	],
 	...
 
-.. note:: If your projection is EPSG:4326 or EPSG:900913, the 'maxExtent' property can be omitted because these SRS are 
-		  supported by default from OpenLayers. If the intent is to use a different SRS from EPSG:4326 and EPSG:900913,
-		  the 'maxExtent' is a mandatory configuration.
+.. note:: If your projection is EPSG:4326 or EPSG:900913, the ``maxExtent`` property can be omitted because these SRS are 
+		  supported by default by OpenLayers. If the intent is to use a different SRS from EPSG:4326 and EPSG:900913,
+		  the ``maxExtent`` is a mandatory configuration.
 		  
 ======================================
 Setting the MapStore Background Layers
@@ -154,7 +158,7 @@ above should be modified.
 In order to manage backgrounds you have to consider that:
 
 1) A background is a layer so he necessarily need a WMS source like the other overlay.
-2) A background configuration must have the 'group' property setted to 'background'.
+2) A background configuration must have the ``group`` property set to ``background``.
 
 In order to configure a new background you have to follow the steps below (it is just an example).
 
@@ -173,7 +177,7 @@ In order to configure a new background you have to follow the steps below (it is
 		},
 		...
 
-- Add the background layers configuration to the 'layers' property::
+- Add the background layers configuration to the ``layers`` property::
 
 		...
 		{
@@ -206,7 +210,7 @@ to the 'layers' property::
 		}
 		...
 
-Beolw a complete example with the complete Map's configuration section as described in steps above::
+Below a complete example with the complete Map's configuration section as described in steps above::
 
 		{			   
 		   "advancedScaleOverlay": false,
@@ -303,14 +307,5 @@ Beolw a complete example with the complete Map's configuration section as descri
 		}			
 		...
 			
-			
-==================
-Document changelog
-==================
 
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     | 2014-04-16 | TDP    | Initial revision |
-+---------+------------+--------+------------------+
 
