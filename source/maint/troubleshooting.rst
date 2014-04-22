@@ -8,8 +8,8 @@ Troubleshooting
 CKAN
 ====
 
-Resource visualization return a server error
---------------------------------------------
+Resource visualization returns a server error
+---------------------------------------------
 
 If the log file reports a::
 
@@ -83,12 +83,3 @@ It should be caused by changes in an harvesting source.
    service supervisord restart
 
     
-==================
-Document changelog
-==================
-
-+----------+------------+--------+-----------------+
-| Versione | Data       | Autore | Note            |
-+==========+============+========+=================+
-| 1.0      | 2014-02-07 | ETj    | Initial version |
-+----------+------------+--------+-----------------+

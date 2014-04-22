@@ -106,7 +106,7 @@ Then restart the machine to make sure every configuration has been set properly 
 Reconfiguring applications
 --------------------------
 
-Reconfig the ``ServerName`` in ``/httpd/conf/httpd.conf`` .
+Reconfig the ``ServerName`` in ``/etc/httpd/conf.d/00_servername.conf`` .
 
 If the current IP is not bound to any name, set the server name to the current IP address; e.g.::
 
@@ -123,12 +123,3 @@ Security reconfig
 You may want to change the passwords for the system users ``root`` and ``tomcat``. 
 
 
-==================
-Document changelog
-==================
-
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     | 2014-02-06 | ETj    | Initial revision |
-+---------+------------+--------+------------------+

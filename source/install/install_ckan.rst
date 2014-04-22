@@ -11,7 +11,7 @@ Introduction
 In this document you'll only find specific information for installing CKAN, some required ancillary applications 
 and some ufficial CKAN extensions.
 
-It is expected that the base system has already been properly installed and configured as described in :ref:`setup_centos`.
+It is expected that the base system has already been properly installed and configured as described in :ref:`setup_system`.
 
 In such document there are information about how to install some required base components, such as PostgreSQL, 
 Apache HTTPD, Oracle Java, Apache Tomcat.
@@ -692,18 +692,34 @@ You may also specify the default SRID::
 
    ckan.spatial.srid = 4326
 
-Then you may force the validation profiles when harvesting::
+Metadata validation
+'''''''''''''''''''
+
+You may force the validation profiles when harvesting::
 
    ckan.spatial.validator.profiles = iso19139,gemini2,constraints
    
 CKAN stops on validation errors by default. 
 If you want to import also metadata that fails the XSD validation you need to add this line to the 
-.ini file::
+``.ini`` file::
    
    ckanext.spatial.harvest.continue_on_validation_errors = True
    
 This same behavior can also be defined on a per-source base, setting 
 ``continue_on_validation_errors`` in the source configuration.
+
+WMS resources validation
+''''''''''''''''''''''''
+
+When importing data, the spatial harvester can optionally check if the WMS services pointed to
+the resources are reachable and working. To enable this check, you have to add this line to the 
+``.ini`` file::   
+
+   ckanext.spatial.harvest.validate_wms = true
+   
+If the service is working, two extras will be added to the related resource: ``verified`` as ``True`` 
+and ``verified_date`` with the timestamp of the verification.
+
 
 .. _configure_spatial_search:
 
@@ -958,16 +974,3 @@ users and/or their related password. Here a list of what you may want to reset (
 
 System account ``ckan`` was created as a *nologin* account so you don't need to reset any password for it.
 
-
-
-==================
-Document changelog
-==================
-
-+---------+------------+--------+-----------------------------------+
-| Version | Date       | Author | Notes                             |
-+=========+============+========+===================================+
-| 1.0     | 2014-02-06 | ETj    | Initial revision                  |
-+---------+------------+--------+-----------------------------------+
-|         | 2014-02-17 | ETj    | Update doc about solr schema file |
-+---------+------------+--------+-----------------------------------+
