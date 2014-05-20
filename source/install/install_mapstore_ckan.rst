@@ -97,6 +97,19 @@ Below the configurations parameters to use::
 		 
 		 **cookies**: Use the standar cookie behavior.  
 
+Configure the WMS version
+-------------------------
+
+The MapStore's CKAN extension allows to configure the WMS version to use for the GetCapabilities URL.
+By default 1.1.1 is used, in order to modify the version number open the ``mapstore_utils.js`` file::
+
+	$ vim /usr/lib/ckan/default/src/ckanext-mapstore/ckanext/mapstore/preview/mapstore_utils.js
+
+and change the ``defaultVersion`` internal property value. For example to use the WMS 1.3.0 version::
+
+	defaultVersion: "1.3.0"
+
+	
 ==========================================
 Enable the basket for multiple WMS preview
 ==========================================
