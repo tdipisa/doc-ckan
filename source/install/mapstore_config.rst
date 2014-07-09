@@ -56,13 +56,21 @@ must be provided  to the standard one:
 		...
 		{
 			"ptype": "gxp_addlayer",
-			"showCapabilitiesGrid": true,
+			"showCapabilitiesGrid": false,
 			"useEvents": true,
-			"showReport": false,
+			"showReport": "never",
 			"directAddLayer": false,
 			"id": "addlayer"
 		}
 		...
+		
+* ``ptype``: The type name of the plugin.
+* ``showCapabilitiesGrid``: Default false. Set to true if you want to automatically show the source dialog after loading the WMS service if any layer (or wrong layer name) has been specified in the original URL.
+* ``useEvents``: Default to false. Use this to true for import operations.
+* ``showReport``: Default to 'never'. possible values are: 'errors' (shows a repot dialog of imported resorces only if errors occurs), 'never' (never visualize the report), 'always' (always visualize the report).
+* ``directAddLayer``: Default to false. Set to true if you want to dyrectly add the layers on the map instead loading the WMS source before.
+* ``id``: The plugin identifier.
+
 
 3) Append the following plugin configuration to the ``customTools`` property::
 
@@ -73,12 +81,21 @@ must be provided  to the standard one:
 			"outputConfig": {
 				"id": "resourcetree"
 			},
-			"outputTarget": "west"
+			"outputTarget": "west",
+			"expandServices": true,
+			"showAllLayers": false	
 		}
 		...
 		
 	.. note:: This is the plugin that allows the visualization of the imported resources from CKAN in a tree tool. 
-		
+	
+* ``ptype``: The type name of the plugin.
+* ``id``: The plugin's identifier.
+* ``outputConfig``: The output configuration options for the plugin's GUI.
+* ``outputTarget``: The target element in which render the plugin.
+* ``expandServices``: Default false. Use it to true in order to expand WSM services showing his layers.
+* ``showAllLayers``: Default false. Set this to true if you want to visualize all imported layers (also for imported services) in the map. Is suggested to maintain this to false if there is a large ammount of layers to show. 
+	
 4) Then open the ``preview.js`` file::
 
 	$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/preview.js
@@ -90,7 +107,7 @@ must be provided  to the standard one:
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
 			"useEvents": true,
-			"showReport": true,
+			"showReport": "errors",
 			"directAddLayer": false,
 			"id": "addlayer"
 		}

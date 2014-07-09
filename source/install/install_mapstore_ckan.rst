@@ -78,16 +78,19 @@ Below the configurations parameters to use::
 		composerPath: "/composer",
 		mapStoreBaseURL: "http://84.33.2.79/mapstore"
 		basketStatus: true,
-		storageMethod: "sessionstorage"
+		storageMethod: "sessionstorage",
+		forceLocaleTo: "en",
+		storeSize: 5000
    }
 
-* ``viewerConfigName``: the MapStore WebGIS configuration to use (see 
-  the `MapStore WIKI <https://github.com/geosolutions-it/mapstore/wiki/mapStoreConfig-File>`_ for more details).
+* ``viewerConfigName``: the MapStore WebGIS configuration to use (see the `MapStore WIKI <https://github.com/geosolutions-it/mapstore/wiki/mapStoreConfig-File>`_ for more details).
 * ``viewerPath``: the relative URL of the MapStore viewer (used for the basic preview inside the CKAN resource page).
 * ``composerPath``: the relative URL of the MapStore advanced viewer (used inside the CKAN preview page in order to open the advanced MapStore viewer in a separate browser page). 
 * ``mapStoreBaseURL``: the MapStore base URL.
 * ``basketStatus``: Set to true if you want to see the icon related to the WMS status inside the Shopping Cart items (the icon show the status of teh WMS resource after the harves procedure).
 * ``storageMethod``: the storage method to use in order to store usage information about the Shopping Cart status. Valid values are: 'localstorage', 'sessionstorage' or 'cookies'.
+* ``forceLocaleTo``: Force the mapstore ckan extension to use a specific language (possible values are 'en' and 'it')
+* ``storeSize``: The limit of the client storage to use (sessioStorage, localStorage or cookies). For most browsers we have more or less 5MB for session and local storage and 4K for cookies. 
 
 .. note::
 
