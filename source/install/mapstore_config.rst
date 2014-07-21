@@ -174,10 +174,12 @@ In order to change or configure the backgrounds layers in MapStore one or more o
 above should be modified. 
 In order to manage backgrounds you have to consider that:
 
-1) A background is a layer so he necessarily need a WMS source like the other overlay.
+1) A background is a layer so he necessarily need a WMS or a WMTS source like the other overlay.
 2) A background configuration must have the ``group`` property set to ``background``.
 
 In order to configure a new background you have to follow the steps below (it is just an example).
+
+For WMS we have:
 
 - Add the related WMS source of the background layer::
 
@@ -205,10 +207,34 @@ In order to configure a new background you have to follow the steps below (it is
 		}
 		...
 
-Now youe background will be added to the background layers list inside MapStore.
-
 .. note:: You can add a background with a native SRS different from the MapStore Map Projection. In this case the WMS server 
           will reproject the background.
+		  
+For WMTS we have:
+
+- Add the related WMTS source of the background layer::
+
+		...
+		"jrc":{
+			"ptype": "gxp_wmtssource",
+			"title": "JRC WMTS GeoServer",
+			"url": "http://139.191.1.77/arcgis/rest/services/Danube/Danube_Grey/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+		},
+		...
+
+- Add the background layers configuration to the ``layers`` property::
+
+		...
+		{
+			"source": "jrc",
+			"title": "Danube_Danube_Grey",
+			"name": "Danube_Danube_Grey",
+			"group": "background"
+		}
+		...
+
+
+Now your background will be added to the background layers list inside MapStore.
 		  
 MapStore allow the possibility to add an empty background to the map. In this case you have to add the configuration below
 to the 'layers' property::
