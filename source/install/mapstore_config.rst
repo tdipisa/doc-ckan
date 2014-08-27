@@ -87,7 +87,8 @@ must be provided  to the standard one:
 		}
 		...
 		
-	.. note:: This is the plugin that allows the visualization of the imported resources from CKAN in a tree tool. 
+		
+.. note:: This is the plugin that allows the visualization of the imported resources from CKAN in a tree tool. 
 	
 * ``ptype``: The type name of the plugin.
 * ``id``: The plugin's identifier.
