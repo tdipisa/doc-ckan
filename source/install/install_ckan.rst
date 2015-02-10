@@ -250,7 +250,7 @@ Activate the vitualenv::
    
 Download and install CKAN::
 
-   pip install -e 'git+https://github.com/ckan/ckan.git@release-v2.2#egg=ckan'
+   pip install -e 'git+https://github.com/ckan/ckan.git@release-v2.2.1#egg=ckan'
    
 Enable pgsql92 path (not needed for Ubuntu)::   
    
@@ -653,6 +653,12 @@ Add the spatial extension to the ``ckan`` DB::
    ckan=# CREATE EXTENSION postgis;
    ckan=# GRANT ALL PRIVILEGES ON DATABASE ckan TO ckan;
    ckan=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ckan;
+
+.. note::
+   On x86_64 if having issues when creating ``EXTENSION postgis`` with ``libhdf.so.6`` try to create the following symbolic links::
+   
+      ln -s /usr/lib64/libhdf5.so.7 /usr/lib64/libhdf5.so.6
+      ln -s /usr/lib64/libhdf5_hl.so.7 /usr/lib64/libhdf5_hl.so.6
 
 Installing ckan spatial
 -----------------------
