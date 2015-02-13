@@ -138,8 +138,7 @@ and install it::
 
 EPEL 6 repository will provide GDAL packages::
 
-  wget http://mirror.i3d.net/pub/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm
-  rpm -ivh epel-release-6-8.noarch.rpm
+  yum install epel-release --enablerepo=extras
 
 Install PG::
 
@@ -275,21 +274,42 @@ For CentOS systems, you can download the JDK RPM from this page:
 Oracle does not expose a URL to automatically dowload the JDK because an interactive licence acceptance is requested.  
 You may start downloading the JDK RPM from a browser, and then either:
 
+You can:
 * stop the download from the browser and use on the server the dynamic download URL your browser has been assigned, or
 * finish the download and transfer the JDK RPM to the server using ``scp``.   
+* install the RPM using the following command line
 
 ::
 
   rpm -ivh jdk-7u51-linux-x64.rpm
 
+Alternatively you can use the following commands:
+
+::
+
+    wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u71-b14/jdk-7u71-linux-x64.tar.gz
+    tar xzvf jdk-7u71-linux-x64.tar.gz
+    mkdir /usr/java
+    mv jdk1.7.0_71/ /usr/java/
+
+    alternatives --install /usr/bin/java java /usr/java/jdk1.7.0_71/bin/java 20000
+    alternatives --install /usr/bin/javac javac /usr/java/jdk1.7.0_71/bin/javac 20000
+    alternatives --install /usr/bin/jar jar /usr/java/jdk1.7.0_71/bin/jar 20000
+    alternatives --install /usr/bin/javaws javaws /usr/java/jdk1.7.0_71/bin/javaws 20000
+
+    alternatives --set java /usr/java/jdk1.7.0_71/bin/java
+    alternatives --set javac /usr/java/jdk1.7.0_71/bin/javac
+    alternatives --set jar /usr/java/jdk1.7.0_71/bin/jar
+    alternatives --set javaws /usr/java/jdk1.7.0_71/bin/javaws
+
 Verify the proper installation on the JDK::
 
   # java -version
-  java version "1.7.0_51"
-  Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
-  Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode) 
+  java version "1.7.0_71"
+  Java(TM) SE Runtime Environment (build 1.7.0_71-b13)
+  Java HotSpot(TM) 64-Bit Server VM (build 24.71-b03, mixed mode) 
   # javac -version
-  javac 1.7.0_51
+  javac 1.7.0_71
   
   
 RedHat
@@ -367,6 +387,35 @@ Now the default java version should be the Oracle one::
 Installing apache tomcat
 ========================
 
+CentOS
+------
+
+::
+
+    yum install tomcat6-webapps
+    ln -s /etc/init.d/tomcat6 /etc/init.d/solr
+    cp /etc/sysconfig/tomcat6 /etc/sysconfig/solr
+    
+    ln -s /usr/share/tomcat6/ /opt/tomcat
+
+Update the ``/etc/sysconfig/solr`` environment variables accordingly :: 
+
+    # vi /etc/sysconfig/solr
+
+    CATALINA_BASE="/var/lib/tomcat/solr"
+    CATALINA_HOME="/opt/tomcat"
+    CATALINA_PID=$CATALINA_BASE/work/pidfile.pid
+
+    JAVA_HOME="/usr/java/jdk1.7.0_71"
+    
+    JAVA_OPTS="$JAVA_OPTS -Xms512m -Xmx800m -XX:MaxPermSize=256m"
+
+    JAVA_OPTS="$JAVA_OPTS -Dsolr.solr.home=/etc/solr/"
+    JAVA_OPTS="$JAVA_OPTS -Dsolr.data.dir=$CATALINA_BASE/data"
+
+Others
+------
+
 Download apache tomcat and install it under ``/opt``::
 
   wget http://mirror.nohup.it/apache/tomcat/tomcat-6/v6.0.39/bin/apache-tomcat-6.0.39.tar.gz
@@ -378,6 +427,10 @@ Let's use a symlink to ease future upgrades::
 
 
 .. _create_catalina_base:
+
+==============================
+Creating apache tomcat context
+==============================
 
 Creating `base/` template directory
 -----------------------------------
