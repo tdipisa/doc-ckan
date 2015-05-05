@@ -25,14 +25,17 @@ In order to add properly a CSW source you'll have to set:
 
 * The CSW URL endpoint
 * A title/name for this source, for your reference
-* The harvest type, i.e. "CSW Server" in "Source type"
+* The harvest type, i.e. "CSW Server (GeoNetwork)" in "Source type"
 * The update frequency 
 * An optional configuration in JSON format.
-* The owner Organization: all the dataset harvested from this source will be assigned to that Organization.
+* The owner Organization: all the dataset harvested from this source will be assigned to that Organization (in this installation LaMMA Model's data are assigned to any organization but 
+GeoNetwork categories are mapped into relative groups of dataset in CKAN)
 
 The JSON configuration allows these parameters:
 
 * ``cql``: a CQL filter for harvesting only a subset of the records in the remote node
+* ``group_mapping``: it's a dict that associates category names to group names. If this parameter is defined, GN will be queried about the categories of the metadata, a matching group for each category will be searched in the provided mapping and will then be associated to the metadata if one or more are found
+* ``private_datasets``: If True sets as private the dataset. A dataset can be private if belongs to an organization furthermore these other parameters will be read. This property has bee nused into the LaMMA-private harcest source that harvest only RADAR and MSG metadata from GeoNetwork.
 * ``default_tags``: all dataset harvested from this source will have these tags attached.
 * ``default_extras``: all dataset harvested from this source will have these key/value pairs attached. 
   The value may have tokens in the form ``{token}``, where the allowed tokens are:

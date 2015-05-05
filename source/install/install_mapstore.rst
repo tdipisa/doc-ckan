@@ -34,9 +34,9 @@ Download packages
 Download the `.war` files needed for a full MapStore installation::
 
    cd /root/download
-   wget http://demo.geo-solutions.it/share/JRC/deliverables/bin/13112014/mapstore.war  
-   wget http://maven.geo-solutions.it/it/geosolutions/geostore/geostore-webapp/1.1-SNAPSHOT/geostore-webapp-1.1-SNAPSHOT-postgresql.war
-   wget http://maven.geo-solutions.it/proxy/http_proxy/1.0-SNAPSHOT/http_proxy-1.0-SNAPSHOT.war  
+   wget http://demo.geo-solutions.it/share/lamma/installation/mapstore.war (or clone and build mapstore from github `here <https://github.com/geosolutions-it/MapStore/tree/c018>`_ )
+   wget http://demo.geo-solutions.it/share/lamma/installation/geostore-webbapp-1.2.war
+   wget http://demo.geo-solutions.it/share/lamma/installation/http_proxy-1.0.5.war  
 
 Setup tomcat base
 -----------------
@@ -45,8 +45,8 @@ Create catalina base directory for MapStore::
 
    cp -a /var/lib/tomcat/base/  /var/lib/tomcat/mapstore
    cp /root/download/mapstore.war              /var/lib/tomcat/mapstore/webapps/mapstore.war
-   cp /root/download/geostore-webapp-1.1-SNAPSHOT-postgresql.war /var/lib/tomcat/mapstore/webapps/geostore.war
-   cp /root/download/http_proxy-1.0.4.war      /var/lib/tomcat/mapstore/webapps/http_proxy.war
+   cp /root/download/geostore-webbapp-1.2.war /var/lib/tomcat/mapstore/webapps/geostore.war
+   cp /root/download/http_proxy-1.0.5.war      /var/lib/tomcat/mapstore/webapps/http_proxy.war
 
 
 Create user and DB for GeoStore
@@ -208,7 +208,36 @@ Then reload the configuration for apache httpd::
 
    service httpd reload
 
-  
+ 
+Configure the MapStore Watchdog
+-------------------------------
+
+The watchdog is a sh script that checks whether an application is active. If not, restart the Tomcat on which it is installed. The script is installed as the crontab job and runs regularly every 10 minutes. There is also a log file where the script's actions are reported.
+To install the watchdog::
+
+	cd /var/lib/tomcat/mapstore/bin
+	wget http://demo.geo-solutions.it/share/lamma/installation/watchdog.sh .
+	touch ../logs/watchdog.log
+	echo "*/10 * * * * root /var/lib/tomcat/mapstore/bin/watchdog.sh" >> /etc/crontab
+
+Now configure the log rotation for the watchdog editing the logrotate file::
+
+	cd /etc/logrotate.d
+	nano tomcat
+	
+with the following content::
+
+	/var/lib/tomcat/mapstore/logs/watchdog.log{
+		copytruncate
+		weekly
+		rotate 8
+		missingok
+		notifempty
+		compress
+		nocreate
+		size 10M
+	}	
+
 Configuring MapStore
 --------------------
 

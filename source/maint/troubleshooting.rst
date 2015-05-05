@@ -21,35 +21,6 @@ try resetting the ``select`` grants::
    GRANT SELECT ON ALL TABLES IN SCHEMA public TO datastore;
    GRANT SELECT ON ALL TABLES IN SCHEMA public TO datastorero;
 
-No WMS resources from Comune Firenze
-------------------------------------
-
-When harvesting from :: 
-   http://datigis.comune.fi.it/geonetwork/srv/it/csw
-   
-you may find that WMS resources are not properly recognized.
-This is due to the heuristics done when parsing resources, that does not
-identifies some WMS paths properly.
-
-Edit the file ``base.py``::
-
-   vim  /usr/lib/ckan/default/src/ckanext-spatial/ckanext/spatial/harvesters/base.py
-    
-search for the line ::    
-
-   'wms': ('service=wms', 'geoserver/wms', 'mapserver/wmsserver', 'com.esri.wms.Esrimap'),
-       
-and add ``'service/wms'`` to the end of the list, so that the line will show as::       
-   
-   'wms': ('service=wms', 'geoserver/wms', 'mapserver/wmsserver', 'com.esri.wms.Esrimap', 'service/wms'),
-   
-Then restart CKAN ::
-
-   service supervisord restart
-   
-You may need to *reharvest the site from scratch, deleting old harvested metadata*; this is because 
-on next harvest the existing metadata will retain their "update date" and will not be reloaded again since no
-change is detected.  
 
 Harvest: error in fetching
 --------------------------

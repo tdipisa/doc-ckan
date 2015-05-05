@@ -29,7 +29,7 @@ can be updated with the following procedure:
 - Login as user ``ckan``.
 - Enter the extension you need to update: e.g.::
 
-   cd /usr/lib/ckan/default/ckanext-ecportal
+   cd /usr/lib/ckan/default/ckanext-lamma
     
 - Pull the updates ::
 

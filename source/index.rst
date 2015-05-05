@@ -1,14 +1,14 @@
 .. _mainindex.rst:
 
-DRDSI CKAN Project
+LaMMA CKAN Project
 ==================
 
-Welcome to the DRDSI CKAN Project documentation v\ |release|.  
+Welcome to the LaMMA CKAN Project documentation.  
 
 This documentation is a guide describing how to setup and administer a system running the CKAN metadata catalog.
  
 The main sections describe how to install and configure the basic OS packages, the core CKAN catalog, 
-some of its official extensions and some other extensions implemented for the DRDSICKAN project. 
+some of its official extensions and some other extensions implemented for the LaMMA project. 
 
 
 Table of contents
