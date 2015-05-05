@@ -971,7 +971,8 @@ users and/or their related password. Here a list of what you may want to reset (
 * Password for PostgreSQL user ``ckan``
 * Password for PostgreSQL user ``datastore``
 * Password for PostgreSQL user ``datastorero``
-* Password for CKAN sysadmin ``ckan``
+* Password for CKAN sysadmin ``sysadmin``
+* Password for CKAN clamma ``mricca76``
 * Clear and reinit db ``ckan`` 
 * Clear and reinit db ``datastore`` 
 * Clear and reinit Solr index

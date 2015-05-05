@@ -263,7 +263,7 @@ Create file ``/etc/httpd/conf.d/05_deflate.conf`` with the following content::
 Configure the GeoServer location for Auth/Auth
 ''''''''''''''''''''''''''''''''''''''''''''''
 
-For protected data in GeoServer te CKAN user must be authenticated when WMS requests are performed from the CKAN's WMS preview.
+For protected data in GeoServer the CKAN user must be authenticated when WMS requests are performed from the CKAN's WMS preview.
 This implies some requirements:
 
 * CKAN and GeoServer must have the same users (i.e. CKAN must replicate the same users of GeoServer)
