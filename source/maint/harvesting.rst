@@ -28,8 +28,7 @@ In order to add properly a CSW source you'll have to set:
 * The harvest type, i.e. "CSW Server (GeoNetwork)" in "Source type"
 * The update frequency 
 * An optional configuration in JSON format.
-* The owner Organization: all the dataset harvested from this source will be assigned to that Organization (in this installation LaMMA Model's data are assigned to any organization but 
-GeoNetwork categories are mapped into relative groups of dataset in CKAN)
+* The owner Organization: all the dataset harvested from this source will be assigned to that Organization (in this installation LaMMA Model's data are assigned to any organization but GeoNetwork categories are mapped into relative groups of dataset in CKAN)
 
 The JSON configuration allows these parameters:
 
