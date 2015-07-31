@@ -36,7 +36,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General substitutions.
-project = u'DRDSI CKAN'
+project = u'CKAN Installation'
 manual = u'doc'
 copyright = u'2014 GeoSolutions'
 
@@ -194,5 +194,3 @@ latex_logo = 'geosolutions.png'
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [('index', 'doc-drdsi', u'DRDSI Documentation', [u'ETj (GeoSolutions)'], 1)]
-
-
