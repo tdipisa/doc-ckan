@@ -33,14 +33,14 @@ Provided VM is configured this way:
 - Disk space: 20GB
 
 
-This configuration is enough for a minimal production environment.  
+This configuration is enough for a minimal production environment.
 
 
 Host info
 ---------
 
-Here a list of the information you are going to set up in your systems. 
-You will need them when configuring the various applications.  
+Here a list of the information you are going to set up in your systems.
+You will need them when configuring the various applications.
 
 - IP address: ___________________________
 - Hostname:   ___________________________
@@ -65,7 +65,7 @@ System users
 |          |          |                                             |
 +----------+----------+---------------------------------------------+
 
-   
+
 PostgreSQL users
 ----------------
 
@@ -78,15 +78,11 @@ PostgreSQL users
 +-------------+--------------------------+------------------------------------+
 | datastorero |                          | RO User for CKAN datastore plugin  |
 +-------------+--------------------------+------------------------------------+
-| geostore    |                          |                                    |
-+-------------+--------------------------+------------------------------------+
-| geonetwork  |                          |                                    |
-+-------------+--------------------------+------------------------------------+
 |             |                          |                                    |
 +-------------+--------------------------+------------------------------------+
-   
-.. _application_ports:   
-   
+
+.. _application_ports:
+
 Installed applications
 ----------------------
 
@@ -96,17 +92,7 @@ Installed applications
 +=============+=========+======+======+===============+===========================+
 | CKAN        | ---     | 5000 | ---  | `/`           |                           |
 +-------------+---------+------+------+---------------+---------------------------+
-| Solr        | 8005    | 8009 | 8080 | `/solr`       | Not exposed through httpd |
-+-------------+---------+------+------+---------------+---------------------------+
-| MapStore    |         |      |      | `/mapstore`   |                           |
-+-------------+         +      +      +---------------+---------------------------+
-| GeoStore    | 8006    | 8010 | 8081 | `/geostore`   |                           |
-+-------------+         |      |      +---------------+                           |
-| httpd-proxy |         |      |      | `/http_proxy` |                           |
-+-------------+---------+------+------+---------------+---------------------------+
-| GeoNetwork  | 8007    | 8011 | 8082 | `/geonetwork` | Optional                  |
-+-------------+---------+------+------+---------------+---------------------------+
-| GeoServer   | 8008    | 8083 | 8012 | `/geoserver`  | Optional                  |
+| Solr        | 8005    | 8080 | 8080 | `/solr`       | Not exposed through httpd |
 +-------------+---------+------+------+---------------+---------------------------+
 |             |         |      |      |               |                           |
 +-------------+---------+------+------+---------------+---------------------------+
@@ -116,10 +102,10 @@ Installed applications
 VM setup
 --------
 
-When creating a VM, you may not want to give VMWare all the information about the system. 
+When creating a VM, you may not want to give VMWare all the information about the system.
 The reason behind this is because VMWare is smart enough to automatically handle some SO installation stages; this stages
 will be skipped on the UI, and this will make the deployment procedure different than one performed on a real machine.
-   
+
 
 Setting up VMWare
 '''''''''''''''''
@@ -127,7 +113,7 @@ Setting up VMWare
 Sample settings for creating a new VM:
 
 - VM configuration: Custom
-- HW compatibility: workstation 8 
+- HW compatibility: workstation 8
 - Install OS from: I will install the the operationg system later
 - Guest OS: Linux Centos 64-bit
 - VM name: *setup the name*
@@ -145,7 +131,7 @@ This is a sample configuration:
 - Mode: Independent, persistent
 - Max disk size: 20G, store virtual disk as a single file.
 
-Then configure the DVD reader setting the ISO image of the OSinstaller, and start the VM. 
+Then configure the DVD reader setting the ISO image of the OSinstaller, and start the VM.
 
 
 ==================
@@ -155,7 +141,5 @@ Document changelog
 +---------+------------+--------+------------------+
 | Version | Date       | Author | Notes            |
 +=========+============+========+==================+
-| 1.0     | 2014-02-06 | ETj    | Initial revision |
-+---------+------------+--------+------------------+
-| 1.1     | 2014-02-26 | Carlo C| Added geoserver  |
+| 1.0     | 2014-02-06 | alpa   | Initial revision |
 +---------+------------+--------+------------------+
