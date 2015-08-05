@@ -22,7 +22,7 @@ Installing Solr
 ===============
 
 Solr is a java webapp used by CKAN as a backend for dataset indexing.
-Solr shall be installed in a tomcat instance on its own, in order to decouple it from other installed webapps (i.e. GeoNetwork, LifeRay).
+Solr shall be installed in a tomcat instance on its own, in order to decouple it from other installed webapps.
 
 We're going to install its catalina base in ``/opt/tomcat/solr`` ; we'll put its configuration files
 in ``/etc/solr``.
