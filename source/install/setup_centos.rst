@@ -122,6 +122,37 @@ Install::
   yum install zip unzip
   yum install wget
 
+===================
+Installing fail2ban
+===================
+
+Install::
+  yum install fail2ban
+
+crate file `/etc/fail2ban/jail.local` with the following configuration:
+
+::
+
+  [INCLUDES]
+
+  before = paths-fedora.conf
+
+  [DEFAULT]
+
+  ignoreip = 127.0.0.1/8
+  bantime  = 3600
+  findtime  = 1800
+  maxretry = 5
+
+  SSH servers
+   [sshd]
+   enabled = true
+   port    = 22
+   action   = firewallcmd-ipset[name=SSH, port=22, protocol=tcp, bantime=3600]
+   logpath  = /var/log/secure
+
+
+
 =================================
 Installing PostgreSQL and PostGIS
 =================================

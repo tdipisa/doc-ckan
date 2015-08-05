@@ -29,10 +29,6 @@ Documentation is released under a :term:`Creative Commons` license with the foll
 
 You are free to Share (to copy, distribute and transmit) and to Remix (to adapt) the documentation under the following conditions:
 
-- Attribution. You must attribute GeoNetwork opensource documentation to `GeoNetwork opensource developers <http://geonetwork-opensource.org>`_.
-
-- Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
-
 With the understanding that:
 
 - Any of the above conditions can be waived if you get permission from the copyright holder.

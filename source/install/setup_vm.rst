@@ -48,22 +48,22 @@ You will need them when configuring the various applications.
 System users
 ------------
 
-+----------+----------+---------------------------------------------+
-| Username | Password | Notes                                       |
-+==========+==========+=============================================+
-| root     |          | Set during OS installation                  |
-+----------+----------+---------------------------------------------+
-| tomcat   |          | Set up in section :ref:`create_user_tomcat` |
-+----------+----------+---------------------------------------------+
-| ckan     | ---      | No login.                                   |
-|          |          | `su -s /bin/bash - ckan`                    |
-+----------+----------+---------------------------------------------+
-|          |          |                                             |
-+----------+----------+---------------------------------------------+
-|          |          |                                             |
-+----------+----------+---------------------------------------------+
-|          |          |                                             |
-+----------+----------+---------------------------------------------+
++--------------+----------+-----------------------------------------+
+| Username     | Password | Notes                                   |
++==============+==========+=========================================+
+| root         |          | Set during OS installation              |
++--------------+----------+-----------------------------------------+
+| tomcat       |          | Refer to :ref:`create_user_tomcat`      |
++--------------+----------+-----------------------------------------+
+| ckan         | ---      | No login.                               |
+|              |          | `su -s /bin/bash - ckan`                |
++--------------+----------+-----------------------------------------+
+| geosolutions |          | Admin user able to connect via SSH      |
++--------------+----------+-----------------------------------------+
+
+.. note::
+    `root` login via SSH is disabled, use `geosolutions` user to manage the server.
+    Also `fail2ban` has been setup to stop brute force attacks over SSH.
 
 
 PostgreSQL users
@@ -77,8 +77,6 @@ PostgreSQL users
 | datastore   |                          | R/W User for CKAN datastore plugin |
 +-------------+--------------------------+------------------------------------+
 | datastorero |                          | RO User for CKAN datastore plugin  |
-+-------------+--------------------------+------------------------------------+
-|             |                          |                                    |
 +-------------+--------------------------+------------------------------------+
 
 .. _application_ports:
@@ -117,7 +115,7 @@ Sample settings for creating a new VM:
 - Install OS from: I will install the the operationg system later
 - Guest OS: Linux Centos 64-bit
 - VM name: *setup the name*
-- Processors: 1 processore, 2 core
+- Processors: 1 processore, 4 core
 - Memory: 4096MB
 - Network connection: bridged
 
@@ -129,7 +127,7 @@ This is a sample configuration:
 - Disk: create a new virtual disk
 - Virtual disk type: SCSI
 - Mode: Independent, persistent
-- Max disk size: 20G, store virtual disk as a single file.
+- Max disk size: 40G, store virtual disk as a single file.
 
 Then configure the DVD reader setting the ISO image of the OSinstaller, and start the VM.
 
@@ -141,5 +139,5 @@ Document changelog
 +---------+------------+--------+------------------+
 | Version | Date       | Author | Notes            |
 +=========+============+========+==================+
-| 1.0     | 2014-02-06 | alpa   | Initial revision |
+| 1.0     | 2015-08-05 | alpa   | Initial revision |
 +---------+------------+--------+------------------+
