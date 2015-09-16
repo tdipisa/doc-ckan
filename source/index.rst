@@ -1,7 +1,7 @@
 .. _mainindex.rst:
 
-CKAN Installation
-==================
+CKAN Installation Documentation
+================================
 
 Welcome to the CKAN Installation documentation v\ |release|.
 
