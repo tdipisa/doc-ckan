@@ -11,31 +11,31 @@ Configuring MapStore
 Introduction
 ============
 
-In this document you'll find specific information for configuring Map and background layers in MapStore. 
+In this document you'll find specific information for configuring Map and background layers in MapStore.
 
-It is expected that CKAN and MapStore have already been properly installed and configured as described 
+It is expected that CKAN and MapStore have already been properly installed and configured as described
 in :ref:`install_ckan` and in :ref:`install_mapstore`.
 
 MapStore uses a different template (and a related configuration) for each WebGIS mode:
 
-- ``composer.html`` is the template used for the advanced viewer 
+- ``composer.html`` is the template used for the advanced viewer
   (its configuration is inside the ``mapStoreConfig.js`` file)::
 
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/templates/composer.html
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/mapStoreConfig.js
 
-- ``viewer.html`` is the template used for the simple viewer 
+- ``viewer.html`` is the template used for the simple viewer
   (its configuration is inside the ``viewer.js`` file)::
 
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/templates/viewer.html
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/viewer.js
-		
-- ``embedded.html`` is the template used for the embedded preview in CKAN 
+
+- ``embedded.html`` is the template used for the embedded preview in CKAN
   (its configuration is inside the ``preview.js`` file)::
 
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/templates/embedded.html
 		$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/preview.js
-		
+
 .. note:: The templates used for the CKAN integration are: ``composer.html`` and ``embedded.html``
 
 ==============================
@@ -44,13 +44,13 @@ Setting the Base configuration
 
 .. warning:: Configurations in this section are mandatory.
 
-Before running MapStore with the 'ckanext-mapstore' extension some mandatory configuration refinement 
+Before running MapStore with the 'ckanext-mapstore' extension some mandatory configuration refinement
 must be provided  to the standard one:
 
 1) Open the ``mapStoreConfig.js`` file::
 
 	$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/mapStoreConfig.js
-	
+
 2) Find the ``gxp_addlayer`` plugin configuration and and changes properties using the values below::
 
 		...
@@ -63,7 +63,7 @@ must be provided  to the standard one:
 			"id": "addlayer"
 		}
 		...
-		
+
 * ``ptype``: The type name of the plugin.
 * ``showCapabilitiesGrid``: Default false. Set to true if you want to automatically show the source dialog after loading the WMS service if any layer (or wrong layer name) has been specified in the original URL.
 * ``useEvents``: Default to false. Use this to true for import operations.
@@ -83,26 +83,26 @@ must be provided  to the standard one:
 			},
 			"outputTarget": "west",
 			"expandServices": true,
-			"showAllLayers": false	
+			"showAllLayers": false
 		}
 		...
-		
-		
-.. note:: This is the plugin that allows the visualization of the imported resources from CKAN in a tree tool. 
-	
+
+
+.. note:: This is the plugin that allows the visualization of the imported resources from CKAN in a tree tool.
+
 * ``ptype``: The type name of the plugin.
 * ``id``: The plugin's identifier.
 * ``outputConfig``: The output configuration options for the plugin's GUI.
 * ``outputTarget``: The target element in which render the plugin.
 * ``expandServices``: Default false. Use it to true in order to expand WSM services showing his layers.
-* ``showAllLayers``: Default false. Set this to true if you want to visualize all imported layers (also for imported services) in the map. Is suggested to maintain this to false if there is a large ammount of layers to show. 
-	
+* ``showAllLayers``: Default false. Set this to true if you want to visualize all imported layers (also for imported services) in the map. Is suggested to maintain this to false if there is a large ammount of layers to show.
+
 4) Then open the ``preview.js`` file::
 
 	$ vim /var/lib/tomcat/webapps/mapstore/WEB-INF/app/static/config/preview.js
-	
+
 5) Find the ``gxp_addlayer`` plugin configuration and changes properties using the values below::
-			
+
 		...
 		{
 			"ptype": "gxp_addlayer",
@@ -120,7 +120,7 @@ Setting the MapStore Map Projection
 
 .. note:: Optional configuration.
 
-In order to change or configure a Projection in MapStore one or more of the configuration files described 
+In order to change or configure a Projection in MapStore one or more of the configuration files described
 above should be modified.
 
 The Projection information is a part of the Map configuration, as an instance::
@@ -135,7 +135,7 @@ The Projection information is a part of the Map configuration, as an instance::
 			20037508.34, 20037508.34
 		],
 		...
-		
+
 Changes to do in this case depends of which SRS you want to use. For example, in order to switch to the EPSG:4326,
 main configuration properties to change are::
 
@@ -148,7 +148,7 @@ main configuration properties to change are::
 		20037508.34, 20037508.34
 	],
 	...
-	
+
 So we will have for example::
 
 	...
@@ -161,18 +161,18 @@ So we will have for example::
 	],
 	...
 
-.. note:: If your projection is EPSG:4326 or EPSG:900913, the ``maxExtent`` property can be omitted because these SRS are 
+.. note:: If your projection is EPSG:4326 or EPSG:900913, the ``maxExtent`` property can be omitted because these SRS are
 		  supported by default by OpenLayers. If the intent is to use a different SRS from EPSG:4326 and EPSG:900913,
 		  the ``maxExtent`` is a mandatory configuration.
-		  
+
 ======================================
 Setting the MapStore Background Layers
 ======================================
 
 .. note:: Optional configuration.
 
-In order to change or configure the backgrounds layers in MapStore one or more of the configuration files described 
-above should be modified. 
+In order to change or configure the backgrounds layers in MapStore one or more of the configuration files described
+above should be modified.
 In order to manage backgrounds you have to consider that:
 
 1) A background is a layer so he necessarily need a WMS or a WMTS source like the other overlay.
@@ -208,9 +208,9 @@ For WMS we have:
 		}
 		...
 
-.. note:: You can add a background with a native SRS different from the MapStore Map Projection. In this case the WMS server 
+.. note:: You can add a background with a native SRS different from the MapStore Map Projection. In this case the WMS server
           will reproject the background.
-		  
+
 For WMTS we have:
 
 - Add the related WMTS source of the background layer::
@@ -236,7 +236,7 @@ For WMTS we have:
 
 
 Now your background will be added to the background layers list inside MapStore.
-		  
+
 MapStore allow the possibility to add an empty background to the map. In this case you have to add the configuration below
 to the 'layers' property::
 
@@ -256,9 +256,9 @@ to the 'layers' property::
 
 Below a complete example with the complete Map's configuration section as described in steps above::
 
-		{			   
+		{
 		   "advancedScaleOverlay": false,
-		   "gsSources":{ 
+		   "gsSources":{
 				"geosolutions": {
 					"ptype": "gxp_wmssource",
 					"url": "http://demo1.geo-solutions.it/geoserver-enterprise/ows",
@@ -271,18 +271,18 @@ Below a complete example with the complete Map's configuration section as descri
 				},
 				"mapquest": {
 					"ptype": "gxp_mapquestsource"
-				}, 
-				"osm": { 
+				},
+				"osm": {
 					"ptype": "gxp_osmsource"
 				},
 				"google": {
-					"ptype": "gxp_googlesource" 
+					"ptype": "gxp_googlesource"
 				},
 				"bing": {
-					"ptype": "gxp_bingsource" 
-				}, 
-				"ol": { 
-					"ptype": "gxp_olsource" 
+					"ptype": "gxp_bingsource"
+				},
+				"ol": {
+					"ptype": "gxp_olsource"
 				}
 			},
 			"map": {
@@ -348,8 +348,5 @@ Below a complete example with the complete Map's configuration section as descri
 					}
 				]
 			}
-		}			
+		}
 		...
-			
-
-

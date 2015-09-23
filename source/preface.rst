@@ -6,11 +6,7 @@ Preface
 About this doc
 --------------
 
-This document provides information about the DRDSICKAN project software architecture. 
-
-It will explain how the various applications within the project will integrate, and how data is flowing between applications.  
-
-This documentation also provides installation, deploy and configuration details.   
+This document provides information about the CKAN installation.
 
 
 License Information
@@ -20,13 +16,11 @@ License Information
 Software
 ````````
 
-All the software used in the DRDSI CKAN project is release under open source licences.    
+All the software used in this project is release under open source licences.
 Namely:
- 
- - `CKAN <http://ckan.org/>`_ v2.2: :term:`AGPL` v3.0
 
- - `GeoNetwork opensource <http://geonetwork-opensource.org>`_ v2.10: :term:`GPL` v2 
-  
+ - `CKAN <http://ckan.org/>`_ v2.4: :term:`AGPL` v3.0
+
 
 Documentation
 `````````````
@@ -34,10 +28,6 @@ Documentation
 Documentation is released under a :term:`Creative Commons` license with the following conditions.
 
 You are free to Share (to copy, distribute and transmit) and to Remix (to adapt) the documentation under the following conditions:
-
-- Attribution. You must attribute GeoNetwork opensource documentation to `GeoNetwork opensource developers <http://geonetwork-opensource.org>`_.
-
-- Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 With the understanding that:
 
@@ -63,8 +53,8 @@ The document is written in reStructuredText format for consistency and portabili
 Author Information
 ------------------
 
-This documentation was written by GeoSolutions. 
+This documentation was written by GeoSolutions.
 
-The layout for the reStructuredText based documentation is based on the work done by the `GeoServer <http://geoserver.org>`_ project and the `Sphinx <http://sphinx.pocoo.org/>`_ framework. 
+The layout for the reStructuredText based documentation is based on the work done by the `GeoServer <http://geoserver.org>`_ project and the `Sphinx <http://sphinx.pocoo.org/>`_ framework.
 
 If you have questions, found a bug or have enhancements, please contact us through info@geosolutions.it
