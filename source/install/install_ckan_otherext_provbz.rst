@@ -13,6 +13,47 @@ unofficial extensions.
 
 .. _extension_tracker:
 
+==============================
+Provincia Di Bolzano Extension
+==============================
+
+The ckanext-provbz CKAN's extension provide some customizations for the CKAN Look and Feel.
+In addition this extension provides an harvester that merge functionalities between two other 
+harvesters built on the ckanext-spatial extension like:
+
+- https://github.com/geosolutions-it/ckanext-multilang
+- https://github.com/geosolutions-it/ckanext-geonetwork
+
+------------
+Requirements
+------------
+
+The ckanext-multilang extension has been developed for CKAN 2.4 or later.
+
+------------------------
+Development Installation
+------------------------
+
+To install ckanext-provbz:
+
+1. Activate your CKAN virtual environment, for example::
+
+     . /usr/lib/ckan/default/bin/activate
+
+2. Go into your CKAN path for extension (like /usr/lib/ckan/default/src)
+
+3. git clone https://github.com/geosolutions-it/ckanext-provbz
+
+4. cd ckanext-provbz
+
+5. python setup.py develop
+
+7. Add ``provbz_theme``  and ``provbz_harvester`` to the ``ckan.plugins`` setting in your CKAN
+   config file (by default the config file is located at
+   ``/etc/ckan/default/production.ini``).
+
+4. Restart CKAN.
+
 ====================
 GeoNetwork harvester
 ====================
@@ -41,6 +82,54 @@ Restart supervisord::
    systemctl stop supervisord
    systemctl start supervisord
 
+====================
+Multilang Extension
+====================
+
+The ckanext-multilang CKAN's extension provides a way to localize your CKAN's title and description contents for: 
+Dataset, Resources, Organizations and Groups. This extension creates some new DB tables for this purpose containing 
+localized contents in base of the configured CKAN's locales in configuration (the production.ini file). So, accessing 
+the CKAN's GUI in 'en', for example, the User can create a new Dataset and automatically new localized records for that 
+language will be created in the multilang tables. In the same way, changing the GUI's language, from the CKAN's language 
+dropdown, the User will be able to edit again the same Dataset in order to specify 'title' and 'description' of the Dataset 
+for the new selected language. In this way Dataset's title and description will automatically changed simply switching the 
+language from the CKAN's dropdonw.
+
+The ckanext-multilang provides also an harvester built on the ckanext-spatial extension, and inherits all of its functionalities. Currently an hooked branch of the stable ckanext-spatial extension is used in order to allow an after import stage functionality (used for the ckanext-multilang persistence):
+
+https://github.com/geosolutions-it/ckanext-spatial/tree/stable_official_hook
+
+In order to install the extension, log in as user ``ckan``, activate the virtual env and check out the extension::
+
+1. Activate your CKAN virtual environment, for example::
+
+     . /usr/lib/ckan/default/bin/activate
+
+2. Go into your CKAN path for extension (like /usr/lib/ckan/default/src)
+
+3. git clone https://github.com/geosolutions-it/ckanext-multilang.git
+
+4. cd ckanext-multilang
+
+5. python setup.py develop
+
+6. paster --plugin=ckanext-multilang multilangdb initdb --config=/etc/ckan/default/production.ini
+
+7. Add ``multilang`` and ``multilang_harvester`` to the ``ckan.plugins`` setting in your CKAN
+   config file (by default the config file is located at
+   ``/etc/ckan/default/production.ini``).
+   
+8. Update the Solr schema.xml file used by CKAN introducing the following elements:
+   
+   Inside the 'fields' Tag:
+      <dynamicField name="multilang_localized_*" type="text" indexed="true" stored="true" multiValued="false"/>
+   
+   A new 'copyField' to append:
+      <copyField source="multilang_localized_*" dest="text"/>
+
+9. Restart Solr.
+
+10. Restart CKAN.
 
 
 ==================
