@@ -99,11 +99,11 @@ dropdown, the User will be able to edit again the same Dataset in order to speci
 for the new selected language. In this way Dataset's title and description will automatically changed simply switching the 
 language from the CKAN's dropdonw.
 
-.. warning:: The ckanext-multilang provides also an harvester built on the ckanext-spatial extension, and inherits all of its functionalities. Currently an hooked branch of the stable ckanext-spatial extension is used in order to allow an after import stage functionality (used for the ckanext-multilang persistence):
+.. warning:: The ckanext-multilang provides also an harvester built on the ckanext-spatial extension, and inherits all of its functionalities. Currently a forked branch of the stable ckanext-spatial extension is used in order to allow an after import stage functionality (used for the ckanext-multilang persistence):
 
-			 https://github.com/geosolutions-it/ckanext-spatial/tree/stable_official_hook
+			 https://github.com/geosolutions-it/ckanext-spatial/tree/stable_official_after_imp_st
 			 
-			 Installing this extension make sure to use this fork and branch. The hook will be ported on the official branch as soon as possible.
+			 Installing the ckanext-multilang extension make sure to use this fork and branch of the ckanext-spatial. The update will be ported on the official branch as soon as possible.
 
 In order to install the extension, log in as user ``ckan``, activate the virtual env and check out the extension::
 
@@ -125,10 +125,12 @@ In order to install the extension, log in as user ``ckan``, activate the virtual
    config file (by default the config file is located at
    ``/etc/ckan/default/production.ini``).
    
-8. Update the Solr schema.xml file used by CKAN introducing the following elements:
+8. Update the Solr schema.xml file used by CKAN (located at /etc/solr/ckan/conf/) introducing the following elements:
    
    Inside the 'fields' Tag:
       <dynamicField name="multilang_localized_*" type="text" indexed="true" stored="true" multiValued="false"/>
+   
+   as first 'dynamicField'
    
    A new 'copyField' to append:
       <copyField source="multilang_localized_*" dest="text"/>
