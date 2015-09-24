@@ -48,11 +48,15 @@ To install ckanext-provbz:
 
 5. python setup.py develop
 
-7. Add ``provbz_theme``  and ``provbz_harvester`` to the ``ckan.plugins`` setting in your CKAN
+6. Add ``provbz_theme``  and ``provbz_harvester`` to the ``ckan.plugins`` setting in your CKAN
    config file (by default the config file is located at
    ``/etc/ckan/default/production.ini``).
 
-4. Restart CKAN.
+7. The ckanext-provbz extension provides some updates for the i18n files for 'it' and 'de' languages. 
+   Locale files in CKAN (.mo and .po) for these languages must be replaced with files located in this 
+   extension at the ckanext-provbz/ckanext/provbz/i18n/ path.
+
+8. Restart CKAN.
 
 ====================
 GeoNetwork harvester
@@ -95,9 +99,11 @@ dropdown, the User will be able to edit again the same Dataset in order to speci
 for the new selected language. In this way Dataset's title and description will automatically changed simply switching the 
 language from the CKAN's dropdonw.
 
-The ckanext-multilang provides also an harvester built on the ckanext-spatial extension, and inherits all of its functionalities. Currently an hooked branch of the stable ckanext-spatial extension is used in order to allow an after import stage functionality (used for the ckanext-multilang persistence):
+.. warning:: The ckanext-multilang provides also an harvester built on the ckanext-spatial extension, and inherits all of its functionalities. Currently an hooked branch of the stable ckanext-spatial extension is used in order to allow an after import stage functionality (used for the ckanext-multilang persistence):
 
-https://github.com/geosolutions-it/ckanext-spatial/tree/stable_official_hook
+			 https://github.com/geosolutions-it/ckanext-spatial/tree/stable_official_hook
+			 
+			 Installing this extension make sure to use this fork and branch. The hook will be ported on the official branch as soon as possible.
 
 In order to install the extension, log in as user ``ckan``, activate the virtual env and check out the extension::
 
