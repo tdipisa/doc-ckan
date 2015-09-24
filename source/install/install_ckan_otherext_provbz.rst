@@ -119,7 +119,9 @@ In order to install the extension, log in as user ``ckan``, activate the virtual
 
 5. python setup.py develop
 
-6. paster --plugin=ckanext-multilang multilangdb initdb --config=/etc/ckan/default/production.ini
+6. Initilize the multilang tables::
+
+	paster --plugin=ckanext-multilang multilangdb initdb --config=/etc/ckan/default/production.ini
 
 7. Add ``multilang`` and ``multilang_harvester`` to the ``ckan.plugins`` setting in your CKAN
    config file (by default the config file is located at
@@ -127,17 +129,23 @@ In order to install the extension, log in as user ``ckan``, activate the virtual
    
 8. Update the Solr schema.xml file used by CKAN (located at /etc/solr/ckan/conf/) introducing the following elements:
    
-   Inside the 'fields' Tag:
-      <dynamicField name="multilang_localized_*" type="text" indexed="true" stored="true" multiValued="false"/>
+   Inside the 'fields' Tag::
+   
+		<dynamicField name="multilang_localized_*" type="text" indexed="true" stored="true" multiValued="false"/>
    
    as first 'dynamicField'
    
-   A new 'copyField' to append:
-      <copyField source="multilang_localized_*" dest="text"/>
+   A new 'copyField' to append::
+   
+		<copyField source="multilang_localized_*" dest="text"/>
 
 9. Restart Solr.
 
 10. Restart CKAN.
+
+.. warning:: Make sure that the final order of the plugins list into the CKAN's configuration (production.ini file) is the folowing::
+
+				ckan.plugins = shibboleth datastore harvest ckan_harvester provbz_theme spatial_metadata spatial_query csw_harvester geonetwork_harvester stats text_view image_view recline_view multilang multilang_harvester provbz_harvester
 
 
 ==================
