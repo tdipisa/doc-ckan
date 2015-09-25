@@ -543,6 +543,8 @@ Init the db for the harvester services::
 
    paster --plugin=ckanext-harvest harvester initdb --config=/etc/ckan/default/production.ini
 
+.. _install_ckan_harvesting_script:
+
 Script harvesting
 -----------------
 
