@@ -286,6 +286,63 @@ Using ``mod_shib`` on your apache httpd installation, you need these lines in yo
 
 :download:`This is the complete ckan.conf configuration file <resources/92_ckan.conf>` you can use as a reference.
 
+CKAN locales configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ckanext-shibboleth extension defines some own locale strings defined into the internal .mo and .po files at ``ckanext-shibboleth/ckanext/shibboleth/i18n/``.
+As reported above, for the ckanext-provbz installation steps, at this point you have already updated the default CKAN's locale files. So the locales information of the 
+ckanext-shibboleth extension should be just appended to the existing ones ('it' and 'de') in CKAN as described below:
+
+1 - Open the file::
+
+	ckanext-shibboleth/ckanext/shibboleth/i18n/it/LC_MESSAGES/ckanext-shibboleth.po
+
+2 - Copy the content reported below::
+
+	#: ckanext/repoze/who/shibboleth/controller.py:25
+	msgid "No user info received for login"
+	msgstr "Non sono state ricevute informazioni sull'utente"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:25
+	msgid "Shibboleth"
+	msgstr "Shibboleth"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:26
+	msgid "Login through Shibboleth."
+	msgstr "Accedi attraverso Shibboleth"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:33
+	msgid "Login via Shibboleth"
+	msgstr "Accedi attraverso Shibboleth"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:45
+	msgid "Authentication by using local account"
+	msgstr "Autenticazione con account locale"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:49
+	msgid "Username"
+	msgstr "Nome utente"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:50
+	msgid "Password"
+	msgstr "Password"
+
+	#: ckanext/repoze/who/shibboleth/templates/user/snippets/login_form.html:59
+	msgid "Log in"
+	msgstr "Accedi"
+	
+3 - Append it at the end of the CKAN's related file for 'it'::
+
+	ckan/ckan/i18n/it/LC_MESSAGES/ckan.po
+
+4 - Rebuild the ckan.mo file with the updated content using the following command::
+
+	cd /usr/lib/ckan/default/src/ckan
+	. /usr/lib/ckan/default/bin/activate
+	
+	python setup.py compile_catalog --locale it
+	
+5 - Repete the steps above for the 'de' locales and finally restart CKAN.
 	
 ==================
 Document changelog

@@ -352,9 +352,33 @@ Edit the file ``/etc/ckan/default/production.ini``
 
 - Language ::
 
-    ckan.locale_default = en
-    ckan.locales_offered = en
-    ckan.locale_order = en
+	ckan.locale_default = it
+	ckan.locale_order = it de
+	ckan.locales_offered = it de
+	ckan.locales_filtered_out =
+	
+- Metadata validator::
+
+	ckan.spatial.validator.profiles = iso19139
+
+- Cache settings::
+
+	ckan.cache_enabled = True
+	#ckan.page_cache_enabled = True
+	ckan.cache_expires = 3600
+
+- Authorization settings::
+
+	ckan.auth.anon_create_dataset = false
+	ckan.auth.create_unowned_dataset = false
+	ckan.auth.create_dataset_if_not_in_organization = false
+	ckan.auth.user_create_groups = false
+	ckan.auth.user_create_organizations = false
+	ckan.auth.user_delete_groups = false
+	ckan.auth.user_delete_organizations = false
+	ckan.auth.create_user_via_api = false
+	ckan.auth.create_user_via_web = false
+	ckan.auth.roles_that_cascade_to_sub_groups = admin
 
 
 The file ``who.ini`` (the *Repoze.who* configuration file) needs to be accessible
@@ -405,8 +429,12 @@ Apache httpd configuration
 
 As ``root``, create the file ``/etc/httpd/conf.d/92-ckan.conf`` and add the following content::
 
+   RequestHeader unset X-Forwarded-Host ## Only if you use a proxy between CKAN and Internet 
+   
    ProxyPass        / http://localhost:5000/
    ProxyPassReverse / http://localhost:5000/
+
+.. warning:: CKAN creates the backreference URL in a smart way using various available information like the **X-Forwarded-Host** including this header if it exists, but cannot know if the header it's incorrect.
 
 and reload the configuration ::
 
