@@ -86,9 +86,9 @@ Restart supervisord::
    systemctl stop supervisord
    systemctl start supervisord
 
-====================
+===================
 Multilang Extension
-====================
+===================
 
 The ckanext-multilang CKAN's extension provides a way to localize your CKAN's title and description contents for: 
 Dataset, Resources, Organizations and Groups. This extension creates some new DB tables for this purpose containing 
@@ -147,63 +147,102 @@ In order to install the extension, log in as user ``ckan``, activate the virtual
 
 				ckan.plugins = shibboleth datastore harvest ckan_harvester provbz_theme spatial_metadata spatial_query csw_harvester geonetwork_harvester stats text_view image_view recline_view multilang multilang_harvester provbz_harvester
 
+
 ====================
 Shibboleth Extension
 ====================
 
-Shibboleth identification plugin for CKAN 2.4. 
+The Shibboleth plugin will allow users to log in into CKAN using an existing Shibboleh environment.  
 
--------------
-Installation 
--------------
+.. hint:: The CKAN shibboleth plugin repository is at http://github.com/geosolutions-it/ckanext-shibboleth
 
-You can install ckanext-shibboleth either with::
 
-    pip install -e git+git://github.com/geosolutions-it/ckanext-shibboleth.git#egg=ckanext-shibboleth
-	
-or::
+------------
+Installation
+------------
 
-    git clone https://github.com/geosolutions-it/ckanext-shibboleth.git
-    python setup.py install
+Activate your CKAN virtual environment::
+
+   . /usr/lib/ckan/default/bin/activate
+
+Go into your CKAN path for extension::
+
+   cd /usr/lib/ckan/default/src
+
+Import the project from the github repository and install it::
+
+   git clone https://github.com/geosolutions-it/ckanext-shibboleth.git
+   cd ckanext-shibboleth
+   python setup.py install
+
         
 --------------------	
 Plugin configuration
 --------------------
 
-who.ini configuration (general overview)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You have to configure the shibboleth plugin.
+There are a couple of configuration files to edit:
+
+``/etc/ckan/default/production.ini``
+
+   - Tells CKAN to load the shibboleth plugin
+    
+``/etc/ckan/default/who.ini``
+
+   - Tells the auth framework to use the shibboleth plugin for authentication.
+   - Tells the shibboleh plugin how to retrieve the info about the authenticated user.  
+
+
+``production.ini`` configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Edit the file ``/etc/ckan/default/production.ini`` and append ``shibboleth`` to the ``ckan.plugins`` line::
+
+     ckan.plugins = [...] shibboleth
+    
+
+``who.ini`` configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Inside the directory ``/etc/ckan/default/`` we created the symbolic link ``who.ini`` 
+linking the file ``/usr/lib/ckan/default/src/ckan/who.ini``.
+We need to edit this file to configure some info for the shibboleth integration.
+We don't want to modifiy the original file so we'll have to:
+
+- Rename the symbolic link so we still have a reference to the original file::
+
+   mv /etc/ckan/default/who.ini /etc/ckan/default/orig.who.ini
+   
+- Create a new file copy to edit::   
+
+   cp /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/shibboleth.who.ini
+    
+- Create a symlink, so you may easily switch back to the original configuration should you need to::
+
+   ln -s /etc/ckan/default/shibboleth.who.ini /etc/ckan/default/who.ini
+ 
+Now let's edit the ``/etc/ckan/default/shibboleth.who.ini`` file.
 
 Add the ``plugin:shibboleth`` section, customizing the env var names::
 
-    [plugin:shibboleth]
-    use = ckanext.shibboleth.repoze.ident:make_identification_plugin
+   [plugin:shibboleth]
+   use = ckanext.shibboleth.repoze.ident:make_identification_plugin
+   
+   session = HTTP_SHIB_SESSION_ID
+   eppn = HTTP_UID
+   mail = NO_MAIL_HEADER
+   fullname = HTTP_SN
+   
+   check_auth_key=HTTP_SHIB_AUTHENTICATION_METHOD
+   check_auth_value=urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+ 
+- ``session`` is used to identify the session id read by the shibboleth integration;
+- ``eppn`` is the identifier used to uniquely identify the user;
+- ``mail`` is the user mail address. You may set it to a name that will not be resolved; the user's mail address will be left blank, 
+  and the user will be reminded about this at every login;
+- ``fullname`` is the string used as the username in CKAN, displayed on the UI;
+- ``check_auth_key`` and ``check_auth_value`` are needed to find out if we are properly receiving info from the Shibboleth module.
 
-    session = YOUR_HEADER_FOR_Shib-Session-ID
-    eppn = YOUR_HEADER_FOR_eppn
-    mail = YOUR_HEADER_FOR_mail
-    fullname = YOUR_HEADER_FOR_cn
-
-    check_auth_key=AUTH_TYPE
-    check_auth_value=shibboleth
-
-``check_auth_key`` and ``check_auth_value`` are needed to find out if we are receiving info from the Shibboleth module. Customize both right-side values if needed. For instance, older Shibboleth implementations may need this configuration::
-
-    check_auth_key=HTTP_SHIB_AUTHENTICATION_METHOD 
-    check_auth_value=urn:oasis:names:tc:SAML:1.0:am:unspecified
-
-who.ini configuration (Provincia di Bolzano)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Below the configuration to use for the Provincia di Bolzano environment::
-
-	[plugin:shibboleth]
-	use = ckanext.shibboleth.repoze.ident:make_identification_plugin
-	session = HTTP_SHIB_SESSION_ID
-	eppn = HTTP_UID
-	mail = NO_MAIL_HEADER
-	fullname = HTTP_SN
-	check_auth_key=HTTP_SHIB_AUTHENTICATION_METHOD
-	check_auth_value=urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport    
 
 Add ``shibboleth`` to the list of the identifier plugins::
 
@@ -229,12 +268,6 @@ Add ``shibboleth`` to the list of the challengers plugins::
     #    friendlyform;browser
     #   basicauth
 
-production.ini configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Add ``shibboleth`` the the ckan.plugins line::
-
-     ckan.plugins = [...] shibboleth
 
 Apache HTTPD configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -250,133 +283,18 @@ Using ``mod_shib`` on your apache httpd installation, you need these lines in yo
         require valid-user
     </Location>
 
-**Below the complete ckan.conf configuration file to use when the shibboleth plugin is installed**::
 
-	# https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPApacheConfig
+:download:`This is the complete ckan.conf configuration file <resources/92_ckan.conf>` you can use as a reference.
 
-	# RPM installations on platforms with a conf.d directory will
-	# result in this file being copied into that directory for you
-	# and preserved across upgrades.
-
-	# For non-RPM installs, you should copy the relevant contents of
-	# this file to a configuration location you control.
-
-	#
-	# Load the Shibboleth module.
-	#
-	LoadModule mod_shib /usr/lib64/shibboleth/mod_shib_24.so
-
-	#
-	# Turn this on to support "require valid-user" rules from other
-	# mod_authn_* modules, and use "require shib-session" for anonymous
-	# session-based authorization in mod_shib.
-	#
-	ShibCompatValidUser Off
-
-	#
-	# Ensures handler will be accessible.
-	#
-	<Location /Shibboleth.sso>
-	  AuthType None
-	  Require all granted
-	</Location>
-
-	#
-	# Used for example style sheet in error templates.
-	#
-	<IfModule mod_alias.c>
-	  <Location /shibboleth-sp>
-		AuthType None
-		Require all granted
-	  </Location>
-	  Alias /shibboleth-sp/main.css /usr/share/shibboleth/main.css
-	</IfModule>
-
-	#
-	# Configure the module for content.
-	#
-	# You MUST enable AuthType shibboleth for the module to process
-	# any requests, and there MUST be a require command as well. To
-	# enable Shibboleth but not specify any session/access requirements
-	# use "require shibboleth".
-	#
-	<Location /secure>
-	  AuthType shibboleth
-	  ShibRequestSetting requireSession 1
-	  require shib-session
-	</Location>
-
-
-
-	# Basic Apache configuration
-
-	<IfModule mod_alias.c>
-	  <Location /shibboleth-ds>
-	#    Allow from all
-	Require all granted
-		<IfModule mod_shib.c>
-		  AuthType shibboleth
-		  ShibRequestSetting requireSession false
-		  require shibboleth
-		</IfModule>
-	  </Location>
-	  Alias /shibboleth-ds/idpselect_config.js /etc/shibboleth-ds/idpselect_config.js
-	  Alias /shibboleth-ds/idpselect.js /etc/shibboleth-ds/idpselect.js
-	  Alias /shibboleth-ds/idpselect.css /etc/shibboleth-ds/idpselect.css
-	  Alias /shibboleth-ds/index.html /etc/shibboleth-ds/index.html
-	  Alias /shibboleth-ds/blank.gif /etc/shibboleth-ds/blank.gif
-	</IfModule>
-
-	<Location /shibboleth>
-	  AuthType shibboleth
-	  ShibRequestSetting requireSession 1
-	  # old setting?
-	  ShibRequireSession On
-	  ShibUseHeaders On
-	  ShibUseEnvironment On
-
-
-					 RewriteEngine On
-					RewriteBase /
-
-					#IDP PROV
-					RewriteCond %{HTTP:Shib-Identity-Provider}  idp.prov.bz
-					RewriteRule .* - [E=INFO_HTTP_SHIB_IDENTITY_PROVIDER:prov,NE]
-					#IDP EGOV
-					RewriteCond %{HTTP:Shib-Identity-Provider}  test-idp.egov.bz.it
-					RewriteRule .* - [E=INFO_HTTP_SHIB_IDENTITY_PROVIDER:egov,NE]
-					#IDP REG
-					RewriteCond %{HTTP:Shib-Identity-Provider}  demo-idp.regione.taa.it
-					RewriteRule .* - [E=INFO_HTTP_SHIB_IDENTITY_PROVIDER:reg,NE]
-
-
-					RequestHeader set INFO_HTTP_REFERER "%{INFO_HTTP_SHIB_IDENTITY_PROVIDER}e"
-					#RequestHeader add "SIAG_USERNAME" "%{INFO_HTTP_SHIB_IDENTITY_PROVIDER}e\%{uid}e"
-					RequestHeader add "SU" "%{INFO_HTTP_SHIB_IDENTITY_PROVIDER}e:%{uid}e"
-
-
-	  require valid-user
-	</Location>
-
-	ProxyPass  /shibboleth-ds  !
-	ProxyPass  /shibboleth-sp  !
-	ProxyPass  /Shibboleth.sso !
-	ProxyPass  /secure         !
-
-	#<Location ~ "^(?!/[Ss]hibboleth)(.*)$" >
-	#  ProxyPass        http://localhost:5000/
-	#  ProxyPassReverse http://localhost:5000/
-	#</Location>
-
-	ProxyPass        / http://localhost:5000/
-	ProxyPassReverse / http://localhost:5000/ 
 	
 ==================
 Document changelog
 ==================
 
-+---------+------------+--------+------------------+
-| Version | Date       | Author | Notes            |
-+=========+============+========+==================+
-| 1.0     |            |        | Initial revision |
-+---------+------------+--------+------------------+
++---------+------+--------+---------------------------------------+
+| Version | Date | Author | Notes                                 |
++=========+======+========+=======================================+
+| 1.0     |      |        | Initial revision                      |
++---------+------+--------+---------------------------------------+
+| 1.1     |      |        | Improve doc for installing shibboleth |
++---------+------+--------+---------------------------------------+
