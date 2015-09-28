@@ -8,6 +8,7 @@ Administration and Maintenance
 
    harvesting.rst
    editor.rst
+   users
    updating.rst
    cloning_vm.rst
    troubleshooting.rst
