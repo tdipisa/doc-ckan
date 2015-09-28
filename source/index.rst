@@ -1,7 +1,7 @@
 .. _mainindex.rst:
 
 CKAN Installation Documentation
-================================
+===============================
 
 Welcome to the CKAN Installation documentation v\ |release|.
 
@@ -19,6 +19,7 @@ Table of contents
 
     preface.rst
     install/index.rst
+    admin/index.rst
     maint/index.rst
 
 Indices and tables
