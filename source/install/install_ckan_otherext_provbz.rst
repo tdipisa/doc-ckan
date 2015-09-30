@@ -56,7 +56,11 @@ To install ckanext-provbz:
    Locale files in CKAN (.mo and .po) for these languages must be replaced with files located in this 
    extension at the ckanext-provbz/ckanext/provbz/i18n/ path.
 
-8. Restart CKAN.
+8. Update the production.ini configuration finding the default property ``licenses_group_url`` and change the value:
+
+licenses_group_url = file:///usr/lib/ckan/default/src/ckanext-provbz/ckanext/provbz/licenses/ckan.json
+
+9. Restart CKAN.
 
 ====================
 GeoNetwork harvester
